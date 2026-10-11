@@ -6,10 +6,10 @@
           <span class="metric-icon users">
             <el-icon><User /></el-icon>
           </span>
-          <span class="metric-trend">{{ authStore.isAdmin ? '全局用户' : '关联账户' }}</span>
+          <span class="metric-trend">{{ authStore.isAdmin ? 'Người dùng toàn cục' : 'Tài khoản liên kết' }}</span>
         </div>
         <strong>{{ authStore.isAdmin ? stats.totalUsers : 1 }}</strong>
-        <p>{{ authStore.isAdmin ? '总用户数' : '当前登录账户' }}</p>
+        <p>{{ authStore.isAdmin ? 'Tổng số người dùng' : 'Tài khoản đang đăng nhập' }}</p>
       </article>
 
       <article class="metric-card">
@@ -17,10 +17,10 @@
           <span class="metric-icon devices">
             <el-icon><Monitor /></el-icon>
           </span>
-          <span class="metric-trend">在线 {{ stats.onlineDevices }}</span>
+          <span class="metric-trend">Trực tuyến {{ stats.onlineDevices }}</span>
         </div>
         <strong>{{ stats.totalDevices }}</strong>
-        <p>{{ authStore.isAdmin ? '设备总数' : '我的设备' }}</p>
+        <p>{{ authStore.isAdmin ? 'Tổng số thiết bị' : 'Thiết bị của tôi' }}</p>
       </article>
 
       <article class="metric-card">
@@ -28,10 +28,10 @@
           <span class="metric-icon agents">
             <el-icon><Cpu /></el-icon>
           </span>
-          <span class="metric-trend">活跃中</span>
+          <span class="metric-trend">Đang hoạt động</span>
         </div>
         <strong>{{ stats.totalAgents }}</strong>
-        <p>{{ authStore.isAdmin ? '智能体数量' : '我的智能体' }}</p>
+        <p>{{ authStore.isAdmin ? 'Số lượng agent' : 'Trợ lý AI của tôi' }}</p>
       </article>
 
       <article class="metric-card">
@@ -39,10 +39,10 @@
           <span class="metric-icon status">
             <el-icon><Connection /></el-icon>
           </span>
-          <span class="metric-trend">实时监测</span>
+          <span class="metric-trend">Giám sát thời gian thực</span>
         </div>
         <strong>{{ stats.onlineDevices }}</strong>
-        <p>在线设备</p>
+        <p>Thiết bị trực tuyến</p>
       </article>
     </section>
 
@@ -53,10 +53,10 @@
             <div class="card-header">
               <div>
                 <p class="card-eyebrow">SERVICE ADDRESS</p>
-                <h3>服务地址</h3>
+                <h3>Địa chỉ dịch vụ</h3>
               </div>
               <el-button type="warning" size="small" :loading="otaTestLoading" @click="runOtaTest">
-                OTA 测试
+                Kiểm tra OTA
               </el-button>
             </div>
           </template>
@@ -87,12 +87,12 @@
               </div>
 
               <div v-if="otaTestResult !== null" class="ota-test-block">
-                <span class="apple-chip is-primary">OTA 返回</span>
+                <span class="apple-chip is-primary">Phản hồi OTA</span>
                 <pre class="ota-test-pre">{{ otaTestResult }}</pre>
               </div>
             </template>
 
-            <div v-else-if="!addressLoading" class="empty-inline">暂无 OTA 配置</div>
+            <div v-else-if="!addressLoading" class="empty-inline">Chưa có cấu hình OTA</div>
           </div>
         </el-card>
 
@@ -101,7 +101,7 @@
             <div class="card-header">
               <div>
                 <p class="card-eyebrow">CONFIGURATION</p>
-                <h3>配置管理</h3>
+                <h3>Quản lý cấu hình</h3>
               </div>
             </div>
           </template>
@@ -110,24 +110,24 @@
             <button class="action-card action-primary" type="button" @click="$router.push('/admin/config-wizard')">
               <span class="action-icon"><el-icon><Guide /></el-icon></span>
               <span class="action-copy">
-                <strong>配置向导</strong>
-                <small>从统一流程完成首次或增量配置</small>
+                <strong>Trình hướng dẫn cấu hình</strong>
+                <small>Hoàn tất cấu hình lần đầu hoặc bổ sung từ quy trình thống nhất</small>
               </span>
             </button>
 
             <button class="action-card" type="button" @click="exportConfig">
               <span class="action-icon"><el-icon><Download /></el-icon></span>
               <span class="action-copy">
-                <strong>导出配置</strong>
-                <small>下载当前有效配置作为备份</small>
+                <strong>Xuất cấu hình</strong>
+                <small>Tải cấu hình hiện tại đang có hiệu lực để sao lưu</small>
               </span>
             </button>
 
             <button class="action-card" type="button" @click="importConfig">
               <span class="action-icon"><el-icon><Upload /></el-icon></span>
               <span class="action-copy">
-                <strong>导入配置</strong>
-                <small>支持 YAML / JSON 的快速导入</small>
+                <strong>Nhập cấu hình</strong>
+                <small>Hỗ trợ nhập nhanh YAML / JSON</small>
               </span>
             </button>
           </div>
@@ -148,28 +148,28 @@
             <div class="card-header">
               <div>
                 <p class="card-eyebrow">SYSTEM</p>
-                <h3>系统信息</h3>
+                <h3>Thông tin hệ thống</h3>
               </div>
             </div>
           </template>
 
           <div class="info-list">
             <div class="info-row">
-              <span>系统版本</span>
+              <span>Phiên bản hệ thống</span>
               <strong>v1.0.0</strong>
             </div>
             <div class="info-row">
-              <span>程序启动时间</span>
+              <span>Thời gian khởi động chương trình</span>
               <strong>{{ programStartedAt }}</strong>
             </div>
             <div class="info-row">
-              <span>当前用户</span>
+              <span>Người dùng hiện tại</span>
               <strong>{{ authStore.user?.username || '—' }}</strong>
             </div>
             <div class="info-row">
-              <span>用户角色</span>
+              <span>Vai trò người dùng</span>
               <el-tag :type="authStore.isAdmin ? 'danger' : 'primary'" effect="light">
-                {{ authStore.isAdmin ? '管理员' : '普通用户' }}
+                {{ authStore.isAdmin ? 'Quản trị viên' : 'Người dùng thường' }}
               </el-tag>
             </div>
           </div>
@@ -180,7 +180,7 @@
             <div class="card-header">
               <div>
                 <p class="card-eyebrow">SHORTCUTS</p>
-                <h3>快速操作</h3>
+                <h3>Thao tác nhanh</h3>
               </div>
             </div>
           </template>
@@ -190,22 +190,22 @@
               <button class="quick-action" type="button" @click="$router.push('/admin/users')">
                 <span class="quick-action-icon"><el-icon><User /></el-icon></span>
                 <span>
-                  <strong>用户管理</strong>
-                  <small>查看账户、权限和状态</small>
+                  <strong>Quản lý người dùng</strong>
+                  <small>Xem tài khoản, quyền và trạng thái</small>
                 </span>
               </button>
               <button class="quick-action" type="button" @click="$router.push('/admin/llm-config')">
                 <span class="quick-action-icon"><el-icon><Setting /></el-icon></span>
                 <span>
-                  <strong>LLM 配置</strong>
-                  <small>调整模型接入、超参与策略</small>
+                  <strong>Cấu hình LLM</strong>
+                  <small>Điều chỉnh kết nối mô hình và chiến lược siêu tham số</small>
                 </span>
               </button>
               <button class="quick-action" type="button" @click="$router.push('/admin/vad-config')">
                 <span class="quick-action-icon"><el-icon><Cpu /></el-icon></span>
                 <span>
-                  <strong>VAD 配置</strong>
-                  <small>管理语音活动检测与实时性</small>
+                  <strong>Cấu hình VAD</strong>
+                  <small>Quản lý phát hiện hoạt động giọng nói và độ trễ thời gian thực</small>
                 </span>
               </button>
             </template>
@@ -214,11 +214,11 @@
               <button class="quick-action" type="button" @click="$router.push('/agents')">
                 <span class="quick-action-icon"><el-icon><Monitor /></el-icon></span>
                 <span>
-                  <strong>智能体管理</strong>
-                  <small>维护角色设定、绑定设备与测试能力</small>
+                  <strong>Quản lý agent</strong>
+                  <small>Duy trì cài đặt vai trò, liên kết thiết bị và năng lực kiểm tra</small>
                 </span>
               </button>
-              <div class="empty-inline">普通用户的高频操作主要集中在智能体和设备工作台。</div>
+              <div class="empty-inline">Các thao tác thường dùng của người dùng thường chủ yếu tập trung ở bàn làm việc agent và thiết bị.</div>
             </template>
           </div>
         </el-card>
@@ -307,7 +307,7 @@ async function loadServiceAddress() {
       }
     }
   } catch (err) {
-    console.error('加载服务地址失败:', err)
+    console.error('Tải địa chỉ dịch vụ thất bại:', err)
   } finally {
     addressLoading.value = false
   }
@@ -316,9 +316,9 @@ async function loadServiceAddress() {
 function copyAddress(text) {
   if (!text) return
   navigator.clipboard.writeText(text).then(() => {
-    ElMessage.success('已复制到剪贴板')
+    ElMessage.success('Đã sao chép vào clipboard')
   }).catch(() => {
-    ElMessage.error('复制失败')
+    ElMessage.error('Sao chép thất bại')
   })
 }
 
@@ -362,13 +362,13 @@ async function runOtaTest() {
         }
 
         if (value.ota_response !== undefined && value.ota_response !== '') {
-          displayText += `\n--- OTA 响应 ---\n${formatOtaResponseDisplay(value.ota_response)}`
+          displayText += `\n--- Phản hồi OTA ---\n${formatOtaResponseDisplay(value.ota_response)}`
         }
 
-        otaTestResult.value = displayText.trim() || '未获取到详细信息'
-        ElMessage[value.ok ? 'success' : 'warning'](value.message || (value.ok ? 'OTA 测试通过' : 'OTA 测试未通过'))
+        otaTestResult.value = displayText.trim() || 'Không lấy được thông tin chi tiết'
+        ElMessage[value.ok ? 'success' : 'warning'](value.message || (value.ok ? 'Kiểm tra OTA thành công' : 'Kiểm tra OTA thất bại'))
       } else {
-        otaTestResult.value = '未获取到 OTA 测试结果'
+        otaTestResult.value = 'Không lấy được kết quả kiểm tra OTA'
       }
     } else {
       otaTestResult.value = typeof data === 'string' ? data : JSON.stringify(data || {}, null, 2)
@@ -376,9 +376,9 @@ async function runOtaTest() {
   } catch (error) {
     const errorMsg = (error.response?.data && typeof error.response.data === 'object')
       ? JSON.stringify(error.response.data, null, 2)
-      : (error.response?.data?.message || error.message || '请求失败')
+      : (error.response?.data?.message || error.message || 'Yêu cầu thất bại')
     otaTestResult.value = errorMsg
-    ElMessage.error('OTA 测试请求失败')
+    ElMessage.error('Yêu cầu kiểm tra OTA thất bại')
   } finally {
     otaTestLoading.value = false
   }
@@ -414,7 +414,7 @@ const loadStats = async () => {
       ? new Date(response.data.programStartedAt).toLocaleString('zh-CN')
       : '—'
   } catch (error) {
-    console.error('加载统计数据失败:', error)
+    console.error('Tải dữ liệu thống kê thất bại:', error)
     stats.value = {
       totalUsers: 0,
       totalDevices: 0,
@@ -444,13 +444,13 @@ const exportConfig = async () => {
       link.click()
       window.URL.revokeObjectURL(url)
       document.body.removeChild(link)
-      ElMessage.success('配置导出成功')
+      ElMessage.success('Xuất cấu hình thành công')
     } else {
-      ElMessage.error('配置导出失败')
+      ElMessage.error('Xuất cấu hình thất bại')
     }
   } catch (error) {
-    console.error('导出配置失败:', error)
-    ElMessage.error('配置导出失败')
+    console.error('Xuất cấu hình thất bại:', error)
+    ElMessage.error('Xuất cấu hình thất bại')
   }
 }
 
@@ -466,7 +466,7 @@ const handleFileChange = async (event) => {
   const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
 
   if (!validExtensions.includes(fileExtension)) {
-    ElMessage.error('请选择 YAML 或 JSON 格式的文件')
+    ElMessage.error('Chọn file định dạng YAML hoặc JSON')
     return
   }
 
@@ -483,14 +483,14 @@ const handleFileChange = async (event) => {
     })
 
     if (response.ok) {
-      ElMessage.success('配置导入成功')
+      ElMessage.success('Nhập cấu hình thành công')
     } else {
       const error = await response.json()
-      ElMessage.error(error.error || '配置导入失败')
+      ElMessage.error(error.error || 'Nhập cấu hình thất bại')
     }
   } catch (error) {
-    console.error('导入配置失败:', error)
-    ElMessage.error('配置导入失败')
+    console.error('Nhập cấu hình thất bại:', error)
+    ElMessage.error('Nhập cấu hình thất bại')
   }
 
   event.target.value = ''

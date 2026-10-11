@@ -21,7 +21,7 @@
               @click="navigate"
             >
               <el-icon><Guide /></el-icon>
-              <span>配置向导</span>
+              <span>Trình hướng dẫn cấu hình</span>
             </el-button>
           </router-link>
           <router-link to="/admin/ota-config" custom v-slot="{ navigate, isActive }">
@@ -32,7 +32,7 @@
               @click="navigate"
             >
               <el-icon><Upload /></el-icon>
-              <span>OTA 配置</span>
+              <span>Cấu hình OTA</span>
             </el-button>
           </router-link>
         </template>
@@ -49,7 +49,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item v-if="!props.isAdmin" command="api-tokens">API Token</el-dropdown-item>
-              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item command="logout">Đăng xuất</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>

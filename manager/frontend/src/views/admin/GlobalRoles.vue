@@ -3,7 +3,7 @@
     <div class="page-actions">
       <el-button type="primary" @click="showCreateDialog = true">
         <el-icon><Plus /></el-icon>
-        创建全局角色
+        Tạo vai trò toàn cục
       </el-button>
     </div>
 
@@ -19,23 +19,23 @@
                   <el-dropdown-menu>
                     <el-dropdown-item command="edit">
                       <el-icon><Edit /></el-icon>
-                      编辑
+                      Sửa
                     </el-dropdown-item>
                     <el-dropdown-item command="duplicate">
                       <el-icon><CopyDocument /></el-icon>
-                      复制
+                      Sao chép
                     </el-dropdown-item>
                     <el-dropdown-item command="toggle-status">
                       <el-icon><SwitchButton /></el-icon>
-                      {{ isRoleActive(role) ? '关闭' : '开启' }}
+                      {{ isRoleActive(role) ? 'Tắt' : 'Bật' }}
                     </el-dropdown-item>
                     <el-dropdown-item command="set-default" :disabled="role.is_default">
                       <el-icon><Star /></el-icon>
-                      {{ role.is_default ? '已默认' : '设为默认' }}
+                      {{ role.is_default ? 'Đã mặc định' : 'Đặt làm mặc định' }}
                     </el-dropdown-item>
                     <el-dropdown-item command="delete" divided>
                       <el-icon><Delete /></el-icon>
-                      删除
+                      Xóa
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -44,34 +44,34 @@
           </template>
 
           <div class="role-content">
-            <p class="description">{{ role.description || '暂无描述' }}</p>
+            <p class="description">{{ role.description || 'Chưa có mô tả' }}</p>
 
             <div class="role-config">
               <el-tag size="small" :type="isRoleActive(role) ? 'success' : 'info'">
-                {{ isRoleActive(role) ? '开启' : '关闭' }}
+                {{ isRoleActive(role) ? 'Bật' : 'Tắt' }}
               </el-tag>
-              <el-tag v-if="role.is_default" size="small" type="warning">默认角色</el-tag>
-              <el-tag size="small" type="primary">LLM: {{ role.llm_config_id || '默认' }}</el-tag>
-              <el-tag size="small" type="success">TTS: {{ role.tts_config_id || '默认' }}</el-tag>
-              <el-tag v-if="role.voice" size="small" type="warning">音色: {{ role.voice }}</el-tag>
+              <el-tag v-if="role.is_default" size="small" type="warning">Vai trò mặc định</el-tag>
+              <el-tag size="small" type="primary">LLM: {{ role.llm_config_id || 'Mặc định' }}</el-tag>
+              <el-tag size="small" type="success">TTS: {{ role.tts_config_id || 'Mặc định' }}</el-tag>
+              <el-tag v-if="role.voice" size="small" type="warning">Giọng đọc: {{ role.voice }}</el-tag>
             </div>
 
             <div class="role-prompt">
               <p class="prompt-label">Prompt</p>
-              <p class="prompt-text">{{ role.prompt || '未设置提示词' }}</p>
+              <p class="prompt-text">{{ role.prompt || 'Chưa đặt prompt' }}</p>
             </div>
           </div>
         </el-card>
       </div>
     </div>
 
-    <el-empty v-if="!loading && roles.length === 0" description="暂无全局角色，点击右上角创建">
-      <el-button type="primary" @click="showCreateDialog = true">创建第一个全局角色</el-button>
+    <el-empty v-if="!loading && roles.length === 0" description="Chưa có vai trò toàn cục nào, nhấn góc phải trên để tạo">
+      <el-button type="primary" @click="showCreateDialog = true">Tạo vai trò toàn cục đầu tiên</el-button>
     </el-empty>
 
     <el-dialog
       v-model="showCreateDialog"
-      :title="editingRole ? '编辑全局角色' : '创建全局角色'"
+      :title="editingRole ? 'Sửa vai trò toàn cục' : 'Tạo vai trò toàn cục'"
       width="800px"
       @close="handleDialogClose"
     >
@@ -83,31 +83,31 @@
       >
         <div class="dialog-sections">
           <section class="dialog-section">
-            <h4 class="dialog-section-title">基本信息</h4>
-            <el-form-item label="角色名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入角色名称" />
+            <h4 class="dialog-section-title">Thông tin cơ bản</h4>
+            <el-form-item label="Tên vai trò" prop="name">
+              <el-input v-model="form.name" placeholder="Nhập tên vai trò" />
             </el-form-item>
 
-            <el-form-item label="描述" prop="description">
+            <el-form-item label="Mô tả" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 :rows="3"
-                placeholder="请输入角色描述"
+                placeholder="Nhập mô tả vai trò"
               />
             </el-form-item>
 
-            <el-form-item label="排序">
+            <el-form-item label="Thứ tự">
               <el-input-number
                 v-model="form.sort_order"
                 :min="0"
                 :step="1"
                 style="width: 100%"
-                placeholder="数字越小越靠前"
+                placeholder="Số càng nhỏ càng lên trước"
               />
             </el-form-item>
 
-            <el-form-item label="默认角色">
+            <el-form-item label="Vai trò mặc định">
               <el-switch v-model="form.is_default" />
             </el-form-item>
           </section>
@@ -115,17 +115,17 @@
           <el-divider />
 
           <section class="dialog-section">
-            <h4 class="dialog-section-title">Prompt配置</h4>
-            <el-form-item label="系统提示词" prop="prompt">
+            <h4 class="dialog-section-title">Cấu hình Prompt</h4>
+            <el-form-item label="Prompt hệ thống" prop="prompt">
               <el-input
                 v-model="form.prompt"
                 type="textarea"
                 :rows="6"
-                placeholder="请输入系统提示词，用于定义角色的行为和性格"
+                placeholder="Nhập prompt hệ thống để định nghĩa hành vi và tính cách của vai trò"
               />
               <div class="prompt-tips">
                 <el-text size="small" type="info">
-                  提示：可以使用 &#123;&#123;assistant_name&#125;&#125; 作为智能体名称的占位符
+                  Gợi ý: có thể dùng &#123;&#123;assistant_name&#125;&#125; làm placeholder cho tên trợ lý
                 </el-text>
               </div>
             </el-form-item>
@@ -134,9 +134,9 @@
           <el-divider />
 
           <section class="dialog-section">
-            <h4 class="dialog-section-title">模型配置</h4>
-            <el-form-item label="LLM配置">
-              <el-select v-model="form.llm_config_id" placeholder="请选择LLM配置（可选）" clearable style="width: 100%">
+            <h4 class="dialog-section-title">Cấu hình mô hình</h4>
+            <el-form-item label="Cấu hình LLM">
+              <el-select v-model="form.llm_config_id" placeholder="Chọn cấu hình LLM (tùy chọn)" clearable style="width: 100%">
                 <el-option
                   v-for="config in llmConfigs"
                   :key="config.id"
@@ -145,18 +145,18 @@
                   :disabled="!config.enabled"
                 >
                   <span>{{ config.name }}</span>
-                  <el-tag v-if="config.is_default" size="small" type="success" style="margin-left: 8px">默认</el-tag>
+                  <el-tag v-if="config.is_default" size="small" type="success" style="margin-left: 8px">Mặc định</el-tag>
                 </el-option>
               </el-select>
               <div class="form-tip">
-                <el-text size="small" type="info">留空则使用默认配置</el-text>
+                <el-text size="small" type="info">Để trống sẽ dùng cấu hình mặc định</el-text>
               </div>
             </el-form-item>
 
-            <el-form-item label="TTS配置">
+            <el-form-item label="Cấu hình TTS">
               <el-select
                 v-model="form.tts_config_id"
-                placeholder="请选择TTS配置（可选）"
+                placeholder="Chọn cấu hình TTS (tùy chọn)"
                 clearable
                 style="width: 100%"
                 @change="handleTtsConfigChange"
@@ -169,18 +169,18 @@
                   :disabled="!config.enabled"
                 >
                   <span>{{ config.name }}</span>
-                  <el-tag v-if="config.is_default" size="small" type="success" style="margin-left: 8px">默认</el-tag>
+                  <el-tag v-if="config.is_default" size="small" type="success" style="margin-left: 8px">Mặc định</el-tag>
                 </el-option>
               </el-select>
               <div class="form-tip">
-                <el-text size="small" type="info">留空则使用默认配置</el-text>
+                <el-text size="small" type="info">Để trống sẽ dùng cấu hình mặc định</el-text>
               </div>
             </el-form-item>
 
-            <el-form-item label="音色" v-if="form.tts_config_id">
+            <el-form-item label="Giọng đọc" v-if="form.tts_config_id">
               <el-select
                 v-model="form.voice"
-                placeholder="请选择或输入音色（支持搜索和自定义输入）"
+                placeholder="Chọn hoặc nhập giọng đọc (hỗ trợ tìm kiếm và nhập tùy chỉnh)"
                 clearable
                 filterable
                 allow-create
@@ -201,7 +201,7 @@
                 </el-option>
               </el-select>
               <div class="form-tip">
-                <el-text size="small" type="info">根据当前TTS配置自动加载音色列表，可搜索或手动输入自定义值</el-text>
+                <el-text size="small" type="info">Tự động tải danh sách giọng đọc theo cấu hình TTS hiện tại, có thể tìm kiếm hoặc nhập giá trị tùy chỉnh</el-text>
               </div>
             </el-form-item>
           </section>
@@ -209,9 +209,9 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="handleDialogClose">取消</el-button>
+        <el-button @click="handleDialogClose">Hủy</el-button>
         <el-button type="primary" @click="handleSave" :loading="saving">
-          保存
+          Lưu
         </el-button>
       </template>
     </el-dialog>
@@ -251,8 +251,8 @@ const form = reactive({
 })
 
 const rules = {
-  name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
-  prompt: [{ required: true, message: '请输入系统提示词', trigger: 'blur' }]
+  name: [{ required: true, message: 'Vui lòng nhập tên vai trò', trigger: 'blur' }],
+  prompt: [{ required: true, message: 'Vui lòng nhập prompt hệ thống', trigger: 'blur' }]
 }
 
 const isRoleActive = (role) => role?.status !== 'inactive'
@@ -263,7 +263,7 @@ const loadRoles = async () => {
     const response = await api.get('/admin/roles/global')
     roles.value = response.data.data || []
   } catch (error) {
-    ElMessage.error('加载角色失败')
+    ElMessage.error('Tải vai trò thất bại')
   } finally {
     loading.value = false
   }
@@ -278,7 +278,7 @@ const loadConfigs = async () => {
     llmConfigs.value = llmRes.data.data || []
     ttsConfigs.value = ttsRes.data.data || []
   } catch (error) {
-    console.error('加载配置列表失败', error)
+    console.error('Tải danh sách cấu hình thất bại', error)
   }
 }
 
@@ -336,7 +336,7 @@ const loadVoices = async (provider) => {
     filteredVoices.value = availableVoices.value
   } catch (error) {
     clearVoiceOptions()
-    console.error('加载音色列表失败', error)
+    console.error('Tải danh sách giọng đọc thất bại', error)
   } finally {
     voiceLoading.value = false
   }
@@ -401,7 +401,7 @@ const editRole = (role) => {
 const duplicateRole = (role) => {
   editingRole.value = null
   Object.assign(form, {
-    name: `${role.name} (副本)`,
+    name: `${role.name} (Bản sao)`,
     description: role.description || '',
     prompt: role.prompt || '',
     llm_config_id: role.llm_config_id || null,
@@ -427,16 +427,16 @@ const handleSave = async () => {
 
         if (editingRole.value) {
           await api.put(`/admin/roles/global/${editingRole.value.id}`, data)
-          ElMessage.success('更新成功')
+          ElMessage.success('Cập nhật thành công')
         } else {
           await api.post('/admin/roles/global', data)
-          ElMessage.success('创建成功')
+          ElMessage.success('Tạo thành công')
         }
 
         showCreateDialog.value = false
         loadRoles()
       } catch (error) {
-        ElMessage.error('保存失败: ' + (error.response?.data?.error || error.message))
+        ElMessage.error('Lưu thất bại: ' + (error.response?.data?.error || error.message))
       } finally {
         saving.value = false
       }
@@ -447,13 +447,13 @@ const handleSave = async () => {
 const toggleRoleStatus = async (role) => {
   if (!role?.id) return
 
-  const action = isRoleActive(role) ? '关闭' : '开启'
+  const action = isRoleActive(role) ? 'Tắt' : 'Bật'
   try {
     await api.patch(`/admin/roles/global/${role.id}/toggle`)
-    ElMessage.success(`角色${action}成功`)
+    ElMessage.success(`Vai trò ${action} thành công`)
     await loadRoles()
   } catch (error) {
-    ElMessage.error('状态切换失败: ' + (error.response?.data?.error || error.message))
+    ElMessage.error('Chuyển trạng thái thất bại: ' + (error.response?.data?.error || error.message))
   }
 }
 
@@ -462,27 +462,27 @@ const setDefaultRole = async (role) => {
 
   try {
     await api.patch(`/admin/roles/global/${role.id}/default`)
-    ElMessage.success('已设为默认角色')
+    ElMessage.success('Đã đặt làm vai trò mặc định')
     await loadRoles()
   } catch (error) {
-    ElMessage.error('设置默认失败: ' + (error.response?.data?.error || error.message))
+    ElMessage.error('Đặt mặc định thất bại: ' + (error.response?.data?.error || error.message))
   }
 }
 
 const deleteRole = async (id) => {
   try {
-    await ElMessageBox.confirm('确定要删除这个全局角色吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm('Bạn có chắc muốn xóa vai trò toàn cục này?', 'Nhắc nhở', {
+      confirmButtonText: 'Xác nhận',
+      cancelButtonText: 'Hủy',
       type: 'warning'
     })
 
     await api.delete(`/admin/roles/global/${id}`)
-    ElMessage.success('删除成功')
+    ElMessage.success('Xóa thành công')
     loadRoles()
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('删除失败')
+      ElMessage.error('Xóa thất bại')
     }
   }
 }

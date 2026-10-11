@@ -3,84 +3,84 @@
     <div class="toolbar">
       <el-button type="primary" @click="openAddDialog">
         <el-icon><Plus /></el-icon>
-        添加设备
+        Thêm thiết bị
       </el-button>
       <el-button @click="loadDevices">
         <el-icon><Refresh /></el-icon>
-        刷新
+        Làm mới
       </el-button>
     </div>
 
     <el-table :data="devices" v-loading="loading" stripe>
       <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column label="设备昵称" min-width="170">
+      <el-table-column label="Biệt danh thiết bị" min-width="170">
         <template #default="{ row }">
           <span class="device-nick-name">{{ getDeviceDisplayName(row) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="device_code" label="激活码" width="150" />
-      <el-table-column label="设备ID" width="190">
+      <el-table-column prop="device_code" label="Mã kích hoạt" width="150" />
+      <el-table-column label="ID thiết bị" width="190">
         <template #default="{ row }">
           <span class="device-id-text">{{ row.device_name || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="user_id" label="用户ID" width="100" />
-      <el-table-column label="关联智能体" width="150">
+      <el-table-column prop="user_id" label="ID người dùng" width="100" />
+      <el-table-column label="Trợ lý AI liên kết" width="150">
         <template #default="{ row }">
           <span v-if="row.agent_id > 0">
-            {{ row.agent_name || `智能体 ${row.agent_id}` }}
+            {{ row.agent_name || `Trợ lý AI ${row.agent_id}` }}
           </span>
-          <el-tag v-else type="info" size="small">未分配</el-tag>
+          <el-tag v-else type="info" size="small">Chưa gán</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="激活状态" width="100">
+      <el-table-column label="Trạng thái kích hoạt" width="100">
         <template #default="{ row }">
           <el-tag :type="row.activated ? 'success' : 'warning'">
-            {{ row.activated ? '已激活' : '未激活' }}
+            {{ row.activated ? 'Đã kích hoạt' : 'Chưa kích hoạt' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="在线状态" width="100">
+      <el-table-column label="Trạng thái trực tuyến" width="100">
         <template #default="{ row }">
           <el-tag :type="isDeviceOnline(row.last_active_at) ? 'success' : 'danger'">
-            {{ isDeviceOnline(row.last_active_at) ? '在线' : '离线' }}
+            {{ isDeviceOnline(row.last_active_at) ? 'Trực tuyến' : 'Ngoại tuyến' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="last_active_at" label="最后活跃时间" width="180">
+      <el-table-column prop="last_active_at" label="Lần hoạt động cuối" width="180">
         <template #default="{ row }">
-          {{ row.last_active_at ? new Date(row.last_active_at).toLocaleString() : '从未活跃' }}
+          {{ row.last_active_at ? new Date(row.last_active_at).toLocaleString() : 'Chưa từng hoạt động' }}
         </template>
       </el-table-column>
-      <el-table-column prop="created_at" label="创建时间" width="180">
+      <el-table-column prop="created_at" label="Thời gian tạo" width="180">
         <template #default="{ row }">
           {{ new Date(row.created_at).toLocaleString() }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="300">
+      <el-table-column label="Thao tác" width="300">
         <template #default="{ row }">
           <el-button size="small" @click="editDevice(row)">
-            编辑
+            Sửa
           </el-button>
           <el-button size="small" type="primary" @click="showDeviceMcp(row)">
             MCP
           </el-button>
           <el-button size="small" type="danger" @click="deleteDevice(row)">
-            删除
+            Xóa
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 添加/编辑设备对话框 -->
+    <!-- Hộp thoại thêm/sửa thiết bị -->
 
-    <el-dialog v-model="showMcpDialog" title="设备MCP工具" width="760px">
+    <el-dialog v-model="showMcpDialog" title="Công cụ MCP của thiết bị" width="760px">
       <div v-loading="mcpLoading">
         <div class="mcp-tools-header">
-          <el-button size="small" type="primary" @click="refreshDeviceMcpTools" :loading="toolsLoading">刷新工具列表</el-button>
+          <el-button size="small" type="primary" @click="refreshDeviceMcpTools" :loading="toolsLoading">Làm mới danh sách công cụ</el-button>
         </div>
 
-        <div v-if="mcpTools.length === 0" class="tools-empty">暂无工具数据</div>
+        <div v-if="mcpTools.length === 0" class="tools-empty">Tạm thời không có dữ liệu công cụ</div>
         <div v-else class="tools-tags">
           <el-tag v-for="tool in mcpTools" :key="tool.name" class="tool-tag">{{ tool.name }}</el-tag>
         </div>
@@ -88,26 +88,26 @@
         <el-divider />
 
         <el-form :model="mcpCallForm" label-width="90px">
-          <el-form-item label="工具">
-            <el-select v-model="mcpCallForm.tool_name" placeholder="请选择工具" style="width:100%" @change="handleMcpToolChange">
+          <el-form-item label="Công cụ">
+            <el-select v-model="mcpCallForm.tool_name" placeholder="Chọn công cụ" style="width:100%" @change="handleMcpToolChange">
               <el-option v-for="tool in mcpTools" :key="tool.name" :label="tool.name" :value="tool.name" />
             </el-select>
           </el-form-item>
-          <el-form-item label="参数JSON">
-            <el-input v-model="mcpCallForm.argumentsText" type="textarea" :rows="6" placeholder='例如: {"query":"hello"}' />
+          <el-form-item label="Tham số JSON">
+            <el-input v-model="mcpCallForm.argumentsText" type="textarea" :rows="6" placeholder='Ví dụ: {"query":"hello"}' />
           </el-form-item>
         </el-form>
 
-        <el-button type="primary" @click="callDeviceMcpTool" :loading="callingTool">调用工具</el-button>
+        <el-button type="primary" @click="callDeviceMcpTool" :loading="callingTool">Gọi công cụ</el-button>
 
         <el-divider />
-        <div class="endpoint-content">{{ mcpCallResult || '暂无调用结果' }}</div>
+        <div class="endpoint-content">{{ mcpCallResult || 'Chưa có kết quả gọi' }}</div>
       </div>
     </el-dialog>
 
     <el-dialog
       v-model="showAddDialog"
-      :title="editingDevice ? '编辑设备' : '添加设备'"
+      :title="editingDevice ? 'Sửa thiết bị' : 'Thêm thiết bị'"
       width="500px"
     >
       <DeviceForm
@@ -117,9 +117,9 @@
         :mode="editingDevice ? 'edit' : 'create'"
       />
       <template #footer>
-        <el-button @click="showAddDialog = false">取消</el-button>
+        <el-button @click="showAddDialog = false">Hủy</el-button>
         <el-button type="primary" @click="saveDevice" :loading="saving">
-          {{ editingDevice ? '更新' : '添加' }}
+          {{ editingDevice ? 'Cập nhật' : 'Thêm' }}
         </el-button>
       </template>
     </el-dialog>
@@ -157,7 +157,7 @@ const loadDevices = async () => {
     const response = await api.get('/admin/devices')
     devices.value = response.data.data || []
   } catch (error) {
-    ElMessage.error('加载设备列表失败')
+    ElMessage.error('Tải danh sách thiết bị thất bại')
     console.error('Error loading devices:', error)
   } finally {
     loading.value = false
@@ -167,7 +167,7 @@ const loadDevices = async () => {
 const getDeviceDisplayName = (device) => {
   const nickName = String(device?.nick_name || '').trim()
   if (nickName) return nickName
-  return String(device?.device_name || '').trim() || '未命名设备'
+  return String(device?.device_name || '').trim() || 'Thiết bị chưa đặt tên'
 }
 
 const openAddDialog = () => {
@@ -184,7 +184,7 @@ const editDevice = (device) => {
 
 const saveDevice = async () => {
   if (!deviceFormRef.value) return
-  
+
   const valid = await deviceFormRef.value.validate().catch(() => false)
   if (!valid) return
 
@@ -193,18 +193,18 @@ const saveDevice = async () => {
     const payload = deviceFormRef.value.buildPayload()
     if (editingDevice.value) {
       await api.put(`/admin/devices/${editingDevice.value.id}`, payload)
-      ElMessage.success('设备更新成功')
+      ElMessage.success('Cập nhật thiết bị thành công')
     } else {
       const response = await api.post('/admin/devices', payload)
-      // 根据后端返回的消息显示不同的提示
-      const message = response.data.message || '设备添加成功'
+      // Hiển thị thông báo khác nhau tùy theo message trả về từ backend
+      const message = response.data.message || 'Thêm thiết bị thành công'
       ElMessage.success(message)
     }
     showAddDialog.value = false
     resetForm()
     loadDevices()
   } catch (error) {
-    const errorMessage = error.response?.data?.error || (editingDevice.value ? '设备更新失败' : '设备添加失败')
+    const errorMessage = error.response?.data?.error || (editingDevice.value ? 'Cập nhật thiết bị thất bại' : 'Thêm thiết bị thất bại')
     ElMessage.error(errorMessage)
     console.error('Error saving device:', error)
   } finally {
@@ -215,21 +215,21 @@ const saveDevice = async () => {
 const deleteDevice = async (device) => {
   try {
     await ElMessageBox.confirm(
-      `确定要删除设备 "${getDeviceDisplayName(device)}" 吗？`,
-      '确认删除',
+      `Bạn có chắc muốn xóa thiết bị "${getDeviceDisplayName(device)}" không?`,
+      'Xác nhận xóa',
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
         type: 'warning'
       }
     )
-    
+
     await api.delete(`/admin/devices/${device.id}`)
-    ElMessage.success('设备删除成功')
+    ElMessage.success('Xóa thiết bị thành công')
     loadDevices()
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('设备删除失败')
+      ElMessage.error('Xóa thiết bị thất bại')
       console.error('Error deleting device:', error)
     }
   }
@@ -260,7 +260,7 @@ const refreshDeviceMcpTools = async () => {
       mcpCallForm.value.tool_name = mcpTools.value[0].name
     }
   } catch (error) {
-    ElMessage.error('获取设备MCP工具失败')
+    ElMessage.error('Lấy công cụ MCP của thiết bị thất bại')
     mcpTools.value = []
   } finally {
     toolsLoading.value = false
@@ -373,7 +373,7 @@ const formatMcpCallResult = (payload) => {
 
 const callDeviceMcpTool = async () => {
   if (!currentDeviceId.value || !mcpCallForm.value.tool_name) {
-    ElMessage.warning('请选择工具')
+    ElMessage.warning('Chọn công cụ')
     return
   }
 
@@ -381,7 +381,7 @@ const callDeviceMcpTool = async () => {
   try {
     argumentsObj = mcpCallForm.value.argumentsText ? JSON.parse(mcpCallForm.value.argumentsText) : {}
   } catch (e) {
-    ElMessage.error('参数JSON格式错误')
+    ElMessage.error('Lỗi định dạng JSON tham số')
     return
   }
 
@@ -392,10 +392,10 @@ const callDeviceMcpTool = async () => {
       arguments: argumentsObj
     })
     mcpCallResult.value = formatMcpCallResult(response.data.data || {})
-    ElMessage.success('MCP工具调用成功')
+    ElMessage.success('Gọi công cụ MCP thành công')
   } catch (error) {
     mcpCallResult.value = JSON.stringify(error.response?.data || { error: error.message }, null, 2)
-    ElMessage.error('MCP工具调用失败')
+    ElMessage.error('Gọi công cụ MCP thất bại')
   } finally {
     callingTool.value = false
   }
@@ -409,12 +409,12 @@ const resetForm = () => {
   }
 }
 
-// 判断设备是否在线（基于最后活跃时间）
+// Kiểm tra thiết bị có trực tuyến không (dựa trên thời gian hoạt động cuối)
 const isDeviceOnline = (lastActiveAt) => {
   if (!lastActiveAt) return false
   const now = new Date()
   const lastActive = new Date(lastActiveAt)
-  // 5分钟内有活动认为在线
+  // Có hoạt động trong 5 phút thì coi là trực tuyến
   return (now - lastActive) < 5 * 60 * 1000
 }
 

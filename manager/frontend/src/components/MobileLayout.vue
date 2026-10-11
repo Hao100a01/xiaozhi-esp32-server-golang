@@ -20,7 +20,7 @@
     
     <MobileTabBar v-if="showTabBar" class="mobile-tabbar" />
     
-    <!-- 用户菜单弹出层 -->
+    <!-- Lớp popup menu người dùng -->
     <van-popup
       v-model:show="showUserMenu"
       position="bottom"
@@ -35,10 +35,10 @@
           </div>
         </div>
         <van-cell-group inset>
-          <van-cell title="更多功能" is-link @click="handleGoMore" />
+          <van-cell title="Thêm tính năng" is-link @click="handleGoMore" />
           <van-cell v-if="!authStore.isAdmin" title="API Token" is-link @click="handleGoApiTokens" />
-          <van-cell v-if="authStore.isAdmin" title="配置向导" is-link @click="handleGoConfigWizard" />
-          <van-cell title="退出登录" is-link @click="handleLogout" />
+          <van-cell v-if="authStore.isAdmin" title="Trình hướng dẫn cấu hình" is-link @click="handleGoConfigWizard" />
+          <van-cell title="Đăng xuất" is-link @click="handleLogout" />
         </van-cell-group>
       </div>
     </van-popup>
@@ -60,19 +60,19 @@ const authStore = useAuthStore()
 
 const showUserMenu = ref(false)
 
-// 页面标题
+// Tiêu đề trang
 const pageTitle = computed(() => {
-  return route.meta?.title || '小智管理系统'
+  return route.meta?.title || 'Hệ thống quản lý Tiểu Trí'
 })
 
-// 是否显示返回按钮（非首页且不在标签栏页面时显示）
+// Có hiển thị nút quay lại hay không (hiện khi không phải trang chủ và không ở trang tab)
 const showBack = computed(() => {
   const hideBackPages = ['/dashboard', '/agents', '/user/speakers', '/more', '/login']
   const currentPath = route.path
   return !hideBackPages.some(path => currentPath === path || currentPath.startsWith(path + '/'))
 })
 
-// 是否显示底部标签栏
+// Có hiển thị thanh tab dưới cùng hay không
 const showTabBar = computed(() => {
   const hideTabBarPages = [
     '/login',
@@ -82,7 +82,7 @@ const showTabBar = computed(() => {
   ]
   const currentPath = route.path
   
-  // 详情页面不显示标签栏
+  // Trang chi tiết không hiện thanh tab
   if (currentPath.includes('/edit') || currentPath.includes('/detail') || currentPath.includes('/history')) {
     return false
   }
@@ -90,12 +90,12 @@ const showTabBar = computed(() => {
   return !hideTabBarPages.includes(currentPath)
 })
 
-// 角色文本
+// Văn bản vai trò
 const roleText = computed(() => {
-  return authStore.isAdmin ? '管理员' : '普通用户'
+  return authStore.isAdmin ? 'Quản trị viên' : 'Người dùng'
 })
 
-// 用户图标点击
+// Click icon người dùng
 const handleUserClick = () => {
   showUserMenu.value = true
 }
@@ -116,24 +116,24 @@ const handleGoConfigWizard = () => {
   showUserMenu.value = false
 }
 
-// 退出登录
+// Đăng xuất
 const handleLogout = async () => {
   try {
     await showConfirmDialog({
-      title: '提示',
-      message: '确定要退出登录吗？'
+      title: 'Thông báo',
+      message: 'Bạn có chắc muốn đăng xuất không?'
     })
     
     authStore.logout()
-    showSuccessToast('已退出登录')
+    showSuccessToast('Đã đăng xuất')
     router.push('/login')
     showUserMenu.value = false
   } catch {
-    // 用户取消
+    // Người dùng hủy
   }
 }
 
-// 监听路由变化，关闭用户菜单
+// Theo dõi thay đổi route, đóng menu người dùng
 watch(
   () => route.path,
   () => {
@@ -165,7 +165,7 @@ watch(
   padding-bottom: calc(84px + env(safe-area-inset-bottom));
 }
 
-/* 页面切换动画 */
+/* Animation chuyển trang */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s;

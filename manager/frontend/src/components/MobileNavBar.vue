@@ -23,7 +23,7 @@ import { useRouter } from 'vue-router'
 const props = defineProps({
   title: {
     type: String,
-    default: '小智管理系统'
+    default: 'Hệ thống quản lý Tiểu Trí'
   },
   showBack: {
     type: Boolean,

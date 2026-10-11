@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="visible"
-    title="语音推送"
+    title="Đẩy giọng nói"
     width="620px"
     class="inject-message-dialog"
     :close-on-click-modal="false"
@@ -13,10 +13,10 @@
       :rules="rules"
       label-position="top"
     >
-      <el-form-item label="选择设备" prop="device_id">
+      <el-form-item label="Chọn thiết bị" prop="device_id">
         <el-select
           v-model="form.device_id"
-          placeholder="请选择要推送语音的设备"
+          placeholder="Chọn thiết bị cần đẩy giọng nói"
           style="width: 100%"
           filterable
           :disabled="deviceSelectDisabled"
@@ -32,58 +32,58 @@
               <div class="device-option-header">
                 <span class="device-name">{{ getDeviceNickName(device) }}</span>
                 <el-tag :type="isDeviceOnline(device.last_active_at) ? 'success' : 'danger'" size="small">
-                  {{ isDeviceOnline(device.last_active_at) ? '在线' : '离线' }}
+                  {{ isDeviceOnline(device.last_active_at) ? 'Trực tuyến' : 'Ngoại tuyến' }}
                 </el-tag>
               </div>
-              <div class="device-code">设备ID: {{ getDeviceIdText(device) }}</div>
-              <div v-if="device.device_code" class="device-code">激活码: {{ device.device_code }}</div>
-              <div class="device-agent">智能体: {{ device.agent_name || '未绑定' }}</div>
+              <div class="device-code">ID thiết bị: {{ getDeviceIdText(device) }}</div>
+              <div v-if="device.device_code" class="device-code">Mã kích hoạt: {{ device.device_code }}</div>
+              <div class="device-agent">Trợ lý AI: {{ device.agent_name || 'Chưa liên kết' }}</div>
             </div>
           </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="推送内容" prop="message">
+      <el-form-item label="Nội dung đẩy" prop="message">
         <el-input
           v-model="form.message"
           type="textarea"
           :rows="4"
-          placeholder="请输入要推送播报的内容"
+          placeholder="Nhập nội dung cần đẩy phát"
           maxlength="500"
           show-word-limit
         />
       </el-form-item>
 
-      <el-form-item label="直接播报" prop="skip_llm">
+      <el-form-item label="Phát trực tiếp" prop="skip_llm">
         <div class="switch-field">
           <div class="switch-copy">
-            <div class="switch-title">{{ directPlayback ? '开启' : '关闭' }}</div>
+            <div class="switch-title">{{ directPlayback ? 'Bật' : 'Tắt' }}</div>
             <div class="switch-desc">
-              {{ directPlayback ? '消息将直接转语音播报，不经过 LLM 推理。' : '消息将先经过 LLM 处理，再进行播报。' }}
+              {{ directPlayback ? 'Tin nhắn sẽ được chuyển thẳng thành giọng nói để phát, không qua suy luận LLM.' : 'Tin nhắn sẽ được LLM xử lý trước, rồi mới phát.' }}
             </div>
           </div>
           <el-switch
             v-model="directPlayback"
             inline-prompt
-            active-text="开启"
-            inactive-text="关闭"
+            active-text="Bật"
+            inactive-text="Tắt"
           />
         </div>
       </el-form-item>
 
-      <el-form-item label="是否转空闲" prop="auto_listen">
+      <el-form-item label="Có chuyển sang trạng thái chờ" prop="auto_listen">
         <div class="switch-field">
           <div class="switch-copy">
-            <div class="switch-title">{{ returnToIdleAfterPlayback ? '开启' : '关闭' }}</div>
+            <div class="switch-title">{{ returnToIdleAfterPlayback ? 'Bật' : 'Tắt' }}</div>
             <div class="switch-desc">
-              {{ returnToIdleAfterPlayback ? '播报完成后回到空闲，适合广播通知和单向播报。' : '播报完成后继续监听，可直接进入下一轮对话。' }}
+              {{ returnToIdleAfterPlayback ? 'Sau khi phát xong trở về trạng thái chờ, phù hợp với thông báo phát thanh và phát một chiều.' : 'Sau khi phát xong tiếp tục lắng nghe, có thể trực tiếp bước vào vòng hội thoại tiếp theo.' }}
             </div>
           </div>
           <el-switch
             v-model="returnToIdleAfterPlayback"
             inline-prompt
-            active-text="开启"
-            inactive-text="关闭"
+            active-text="Bật"
+            inactive-text="Tắt"
           />
         </div>
       </el-form-item>
@@ -91,9 +91,9 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleClose">取消</el-button>
+        <el-button @click="handleClose">Hủy</el-button>
         <el-button type="primary" :loading="submitting" @click="handleSubmit">
-          {{ submitting ? '推送中...' : '语音推送' }}
+          {{ submitting ? 'Đang đẩy...' : 'Đẩy giọng nói' }}
         </el-button>
       </div>
     </template>
@@ -158,11 +158,11 @@ const form = reactive({
 
 const rules = {
   device_id: [
-    { required: true, message: '请选择设备', trigger: 'change' }
+    { required: true, message: 'Chọn thiết bị', trigger: 'change' }
   ],
   message: [
-    { required: true, message: '请输入推送内容', trigger: 'blur' },
-    { min: 1, max: 500, message: '推送内容需在 1-500 个字符之间', trigger: 'blur' }
+    { required: true, message: 'Nhập nội dung đẩy', trigger: 'blur' },
+    { min: 1, max: 500, message: 'Nội dung đẩy phải nằm trong 1-500 ký tự', trigger: 'blur' }
   ]
 }
 
@@ -175,7 +175,7 @@ const isDeviceOnline = (lastActiveAt) => {
 const getDeviceNickName = (device) => {
   const nickName = String(device?.nick_name || '').trim()
   if (nickName) return nickName
-  return String(device?.device_name || '').trim() || '未命名设备'
+  return String(device?.device_name || '').trim() || 'Thiết bị chưa đặt tên'
 }
 
 const getDeviceIdText = (device) => String(device?.device_name || '').trim() || '-'
@@ -224,12 +224,12 @@ const handleSubmit = async () => {
       auto_listen: form.auto_listen
     })
     if (response.data?.success) {
-      ElMessage.success('语音推送成功')
+      ElMessage.success('Đẩy giọng nói thành công')
       emit('success', response.data?.data || null)
       closeDialog()
     }
   } catch (error) {
-    ElMessage.error(error.response?.data?.error || '语音推送失败')
+    ElMessage.error(error.response?.data?.error || 'Đẩy giọng nói thất bại')
   } finally {
     submitting.value = false
   }

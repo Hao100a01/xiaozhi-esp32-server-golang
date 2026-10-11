@@ -3,67 +3,67 @@
     <el-card>
       <template #header>
         <div class="card-header">
-          <span>资源池统计</span>
+          <span>Thống kê nhóm tài nguyên</span>
           <div class="header-actions">
             <el-button type="primary" size="small" @click="refreshStats">
               <el-icon><Refresh /></el-icon>
-              刷新
+              Làm mới
             </el-button>
             <el-select v-model="viewType" size="small" style="width: 120px; margin-left: 10px;" disabled>
-              <el-option label="最新数据" value="latest" />
+              <el-option label="Dữ liệu mới nhất" value="latest" />
             </el-select>
           </div>
         </div>
       </template>
 
-      <!-- 统计摘要 -->
+      <!-- Tóm tắt thống kê -->
       <el-row :gutter="20" style="margin-bottom: 20px;">
         <el-col :span="6">
-          <el-statistic title="总记录数" :value="summary.total_records || 0" />
+          <el-statistic title="Tổng số bản ghi" :value="summary.total_records || 0" />
         </el-col>
         <el-col :span="6">
           <div class="stat-item">
-            <div class="stat-title">存储方式</div>
-            <div class="stat-value">仅最新数据</div>
+            <div class="stat-title">Cách lưu trữ</div>
+            <div class="stat-value">Chỉ dữ liệu mới nhất</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="stat-item">
-            <div class="stat-title">最早时间</div>
+            <div class="stat-title">Thời gian sớm nhất</div>
             <div class="stat-value">{{ formatTime(summary.oldest_timestamp) }}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="stat-item">
-            <div class="stat-title">最新时间</div>
+            <div class="stat-title">Thời gian mới nhất</div>
             <div class="stat-value">{{ formatTime(summary.newest_timestamp) }}</div>
           </div>
         </el-col>
       </el-row>
 
-      <!-- 最新统计数据 -->
+      <!-- Dữ liệu thống kê mới nhất -->
       <div v-if="viewType === 'latest' && latestStats">
-        <el-divider>最新统计数据（{{ formatTime(latestStats.timestamp) }}）</el-divider>
+        <el-divider>Dữ liệu thống kê mới nhất ({{ formatTime(latestStats.timestamp) }})</el-divider>
         <el-table :data="formatStatsData(latestStats.stats)" border stripe style="width: 100%" v-if="latestStats.stats">
-          <el-table-column prop="poolKey" label="资源池" width="200" />
-          <el-table-column prop="total" label="总资源数" width="120" />
-          <el-table-column prop="available" label="可用资源" width="120" />
-          <el-table-column prop="inUse" label="使用中" width="120" />
-          <el-table-column prop="maxSize" label="最大容量" width="120" />
-          <el-table-column prop="minSize" label="最小容量" width="120" />
-          <el-table-column prop="maxIdle" label="最大空闲" width="120" />
-          <el-table-column prop="isClosed" label="状态" width="100">
+          <el-table-column prop="poolKey" label="Nhóm tài nguyên" width="200" />
+          <el-table-column prop="total" label="Tổng tài nguyên" width="120" />
+          <el-table-column prop="available" label="Tài nguyên khả dụng" width="120" />
+          <el-table-column prop="inUse" label="Đang sử dụng" width="120" />
+          <el-table-column prop="maxSize" label="Dung lượng tối đa" width="120" />
+          <el-table-column prop="minSize" label="Dung lượng tối thiểu" width="120" />
+          <el-table-column prop="maxIdle" label="Số nhàn rỗi tối đa" width="120" />
+          <el-table-column prop="isClosed" label="Trạng thái" width="100">
             <template #default="{ row }">
               <el-tag :type="row.isClosed ? 'danger' : 'success'">
-                {{ row.isClosed ? '已关闭' : '运行中' }}
+                {{ row.isClosed ? 'Đã đóng' : 'Đang chạy' }}
               </el-tag>
             </template>
           </el-table-column>
         </el-table>
       </div>
 
-      <!-- 空状态 -->
-      <el-empty v-if="!latestStats" description="暂无统计数据" />
+      <!-- Trạng thái trống -->
+      <el-empty v-if="!latestStats" description="Chưa có dữ liệu thống kê" />
     </el-card>
   </div>
 </template>
@@ -78,7 +78,7 @@ const viewType = ref('latest')
 const latestStats = ref(null)
 const summary = ref({
   total_records: 0,
-  storage_duration: '仅保存最新数据',
+  storage_duration: 'Chỉ lưu dữ liệu mới nhất',
   oldest_timestamp: null,
   newest_timestamp: null
 })
@@ -88,7 +88,7 @@ let refreshTimer = null
 onMounted(() => {
   loadSummary()
   loadStats()
-  // 每30秒自动刷新
+  // Tự động làm mới mỗi 30 giây
   refreshTimer = setInterval(() => {
     loadStats()
   }, 30000)
@@ -100,41 +100,41 @@ onUnmounted(() => {
   }
 })
 
-// 加载统计摘要
+// Tải tóm tắt thống kê
 const loadSummary = async () => {
   try {
     const response = await api.get('/admin/pool/stats/summary')
-    // 后端返回格式: { data: { data: {...} } }
+    // Định dạng backend trả về: { data: { data: {...} } }
     summary.value = response.data?.data || {}
   } catch (error) {
-    console.error('加载统计摘要失败:', error)
+    console.error('Tải tóm tắt thống kê thất bại:', error)
   }
 }
 
-// 加载统计数据
+// Tải dữ liệu thống kê
 const loadStats = async () => {
   try {
     const response = await api.get('/admin/pool/stats?type=latest')
-    console.log('最新统计数据响应:', response)
-    // 后端返回格式: { data: { timestamp: "...", stats: {...} } }
-    // axios 会自动解析，所以 response.data 就是后端返回的 { data: {...} }
-    // 需要再取一层 data
+    console.log('Phản hồi dữ liệu thống kê mới nhất:', response)
+    // Định dạng backend trả về: { data: { timestamp: "...", stats: {...} } }
+    // axios tự động phân giải, nên response.data chính là { data: {...} } backend trả về
+    // Cần lấy thêm một lớp data
     latestStats.value = response.data?.data || response.data || null
-    console.log('解析后的最新数据:', latestStats.value)
+    console.log('Dữ liệu mới nhất sau phân giải:', latestStats.value)
   } catch (error) {
-    console.error('加载统计数据失败:', error)
-    ElMessage.error('加载统计数据失败')
+    console.error('Tải dữ liệu thống kê thất bại:', error)
+    ElMessage.error('Tải dữ liệu thống kê thất bại')
   }
 }
 
-// 刷新统计数据
+// Làm mới dữ liệu thống kê
 const refreshStats = () => {
   loadSummary()
   loadStats()
-  ElMessage.success('刷新成功')
+  ElMessage.success('Làm mới thành công')
 }
 
-// 格式化统计数据
+// Định dạng dữ liệu thống kê
 const formatStatsData = (stats) => {
   if (!stats || typeof stats !== 'object') {
     return []
@@ -158,13 +158,13 @@ const formatStatsData = (stats) => {
   return result
 }
 
-// 格式化时间
+// Định dạng thời gian
 const formatTime = (timestamp) => {
   if (!timestamp) {
     return '-'
   }
   const date = new Date(timestamp)
-  return date.toLocaleString('zh-CN', {
+  return date.toLocaleString('vi-VN', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

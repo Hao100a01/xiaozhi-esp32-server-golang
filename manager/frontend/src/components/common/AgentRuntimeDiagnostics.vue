@@ -4,7 +4,7 @@
       <el-collapse-item name="mcp">
         <template #title>
           <div class="collapse-title">
-            <strong>MCP 接入点与工具调试</strong>
+            <strong>Điểm truy cập MCP và gỡ lỗi công cụ</strong>
             <span>{{ mcpSummaryText }}</span>
           </div>
         </template>
@@ -12,7 +12,7 @@
         <div class="diagnostic-section" v-loading="mcpLoading">
           <div class="status-row">
             <div>
-              <div class="field-label">智能体 WebSocket</div>
+              <div class="field-label">Trợ lý AI WebSocket</div>
               <div class="status-inline">
                 <el-tag :type="mcpStatusTagType">{{ mcpStatusText }}</el-tag>
                 <span>{{ mcpStatusDetailText }}</span>
@@ -21,27 +21,27 @@
             <div class="action-row">
               <el-button size="small" @click="refreshMcpDebugInfo" :loading="mcpLoading">
                 <el-icon><Refresh /></el-icon>
-                刷新数据
+                Làm mới dữ liệu
               </el-button>
               <el-button size="small" type="primary" @click="copyMcpEndpoint" :disabled="!mcpEndpointData.endpoint">
-                复制 URL
+                Sao chép URL
               </el-button>
             </div>
           </div>
 
           <div class="result-block">
-            <div class="field-label">MCP 接入点 URL</div>
-            <pre class="code-box">{{ mcpEndpointData.endpoint || '暂无接入点，请先保存智能体并刷新。' }}</pre>
+            <div class="field-label">URL điểm truy cập MCP</div>
+            <pre class="code-box">{{ mcpEndpointData.endpoint || 'Chưa có điểm truy cập, hãy lưu Trợ lý AI rồi làm mới.' }}</pre>
           </div>
 
           <div class="tool-header">
-            <div class="field-label">MCP 工具列表</div>
+            <div class="field-label">Danh sách công cụ MCP</div>
             <el-button size="small" type="primary" @click="refreshMcpTools" :loading="toolsLoading">
               <el-icon><Refresh /></el-icon>
-              刷新工具列表
+              Làm mới danh sách công cụ
             </el-button>
           </div>
-          <div v-if="mcpTools.length === 0" class="empty-box">暂无工具数据</div>
+          <div v-if="mcpTools.length === 0" class="empty-box">Chưa có dữ liệu công cụ</div>
           <div v-else class="tool-list">
             <el-tag
               v-for="tool in mcpTools"
@@ -54,10 +54,10 @@
           </div>
 
           <el-form label-position="top" class="diagnostic-form">
-            <el-form-item label="工具">
+            <el-form-item label="Công cụ">
               <el-select
                 v-model="mcpCallForm.tool_name"
-                placeholder="请选择工具"
+                placeholder="Chọn công cụ"
                 style="width: 100%"
                 filterable
                 @change="handleMcpToolChange"
@@ -65,12 +65,12 @@
                 <el-option v-for="tool in mcpTools" :key="tool.name" :label="tool.name" :value="tool.name" />
               </el-select>
             </el-form-item>
-            <el-form-item label="参数 JSON">
-              <el-input v-model="mcpCallForm.argumentsText" type="textarea" :rows="6" placeholder='例如: {"query":"hello"}' />
+            <el-form-item label="Tham số JSON">
+              <el-input v-model="mcpCallForm.argumentsText" type="textarea" :rows="6" placeholder='Ví dụ: {"query":"hello"}' />
             </el-form-item>
           </el-form>
-          <el-button type="primary" @click="callAgentMcpTool" :loading="callingTool">调用工具</el-button>
-          <pre class="code-box result-box">{{ mcpCallResult || '暂无调用结果' }}</pre>
+          <el-button type="primary" @click="callAgentMcpTool" :loading="callingTool">Gọi công cụ</el-button>
+          <pre class="code-box result-box">{{ mcpCallResult || 'Chưa có kết quả gọi' }}</pre>
         </div>
       </el-collapse-item>
 
@@ -85,27 +85,27 @@
         <div class="diagnostic-section">
           <div class="status-row">
             <div>
-              <div class="field-label">连接状态</div>
+              <div class="field-label">Trạng thái kết nối</div>
               <div class="status-inline">
                 <el-tag :type="openClawStatusTagType">{{ openClawStatusText }}</el-tag>
-                <span>{{ openClawEndpointData.status_message || '角色配置命令会在下方实时展示。' }}</span>
+                <span>{{ openClawEndpointData.status_message || 'Lệnh cấu hình vai trò sẽ hiển thị trực tiếp bên dưới.' }}</span>
               </div>
             </div>
             <div class="action-row">
-              <el-link :href="openClawDocURL" target="_blank" type="primary" :underline="false">查看文档</el-link>
-              <el-button size="small" @click="fetchOpenClawEndpoint" :loading="openClawEndpointLoading">刷新状态</el-button>
+              <el-link :href="openClawDocURL" target="_blank" type="primary" :underline="false">Xem tài liệu</el-link>
+              <el-button size="small" @click="fetchOpenClawEndpoint" :loading="openClawEndpointLoading">Làm mới trạng thái</el-button>
               <el-button size="small" type="primary" @click="copyOpenClawCommands" :disabled="!openClawCommandData.ready">
-                复制命令
+                Sao chép lệnh
               </el-button>
             </div>
           </div>
 
           <div class="result-block" v-loading="openClawEndpointLoading">
-            <div class="field-label">OpenClaw 角色配置命令</div>
-            <div v-if="openClawCommandData.ready" class="command-hint">在 OpenClaw 控制台角色配置中依次执行以下命令：</div>
+            <div class="field-label">Lệnh cấu hình vai trò OpenClaw</div>
+            <div v-if="openClawCommandData.ready" class="command-hint">Thực hiện lần lượt các lệnh sau trong cấu hình vai trò console OpenClaw:</div>
             <div v-if="openClawCommandData.ready" class="command-steps">
               <div v-for="(step, index) in openClawCommandData.steps" :key="`${step.title}-${index}`" class="command-step">
-                <div class="command-step-title">第 {{ index + 1 }} 行：{{ step.title }}</div>
+                <div class="command-step-title">Dòng {{ index + 1 }}: {{ step.title }}</div>
                 <pre class="code-box">{{ step.command }}</pre>
               </div>
             </div>
@@ -113,19 +113,19 @@
           </div>
 
           <div class="result-block">
-            <div class="field-label">OpenClaw 对话测试</div>
+            <div class="field-label">Kiểm tra trò chuyện OpenClaw</div>
             <el-form label-position="top" class="diagnostic-form">
-              <el-form-item label="测试消息">
+              <el-form-item label="Tin nhắn kiểm tra">
                 <el-input
                   v-model="openClawChatTestForm.message"
                   type="textarea"
                   :rows="3"
-                  placeholder="输入要发送到 OpenClaw 的文本"
+                  placeholder="Nhập văn bản cần gửi tới OpenClaw"
                 />
               </el-form-item>
             </el-form>
-            <el-button type="primary" @click="testOpenClawChat" :loading="openClawChatTesting">发送测试</el-button>
-            <pre class="code-box result-box">{{ openClawChatTestResult || '暂无测试结果' }}</pre>
+            <el-button type="primary" @click="testOpenClawChat" :loading="openClawChatTesting">Gửi kiểm tra</el-button>
+            <pre class="code-box result-box">{{ openClawChatTestResult || 'Chưa có kết quả kiểm tra' }}</pre>
           </div>
         </div>
       </el-collapse-item>
@@ -196,9 +196,9 @@ const openClawDocURL = 'https://github.com/hackers365/xiaozhi-esp32-server-golan
 
 const mcpStatusText = computed(() => {
   const status = String(mcpEndpointData.value.status || '').toLowerCase()
-  if (mcpEndpointData.value.connected || status === 'online') return '已连接'
-  if (status === 'offline') return '未连接'
-  return '状态未知'
+  if (mcpEndpointData.value.connected || status === 'online') return 'Đã kết nối'
+  if (status === 'offline') return 'Chưa kết nối'
+  return 'Không rõ trạng thái'
 })
 
 const mcpStatusTagType = computed(() => {
@@ -210,21 +210,21 @@ const mcpStatusTagType = computed(() => {
 
 const mcpStatusDetailText = computed(() => {
   const count = Number(mcpEndpointData.value.client_count || 0)
-  if (count > 0) return `当前 ${count} 个客户端在线`
-  return mcpEndpointData.value.status_message || '暂无在线客户端'
+  if (count > 0) return `Hiện có ${count} client trực tuyến`
+  return mcpEndpointData.value.status_message || 'Chưa có client trực tuyến'
 })
 
 const mcpSummaryText = computed(() => {
-  if (!mcpEndpointLoaded.value) return '展开后加载接入点与工具'
-  if (!mcpLoaded.value) return `${mcpStatusText.value}，展开后加载工具`
-  return `${mcpStatusText.value}，${mcpTools.value.length} 个工具`
+  if (!mcpEndpointLoaded.value) return 'Mở ra để tải điểm truy cập và công cụ'
+  if (!mcpLoaded.value) return `${mcpStatusText.value}, mở ra để tải công cụ`
+  return `${mcpStatusText.value}, ${mcpTools.value.length} công cụ`
 })
 
 const openClawStatusText = computed(() => {
   const status = String(openClawEndpointData.value.status || '').toLowerCase()
-  if (openClawEndpointData.value.connected || status === 'online') return '已连接'
-  if (status === 'offline') return '未连接'
-  return '状态未知'
+  if (openClawEndpointData.value.connected || status === 'online') return 'Đã kết nối'
+  if (status === 'offline') return 'Chưa kết nối'
+  return 'Không rõ trạng thái'
 })
 
 const openClawStatusTagType = computed(() => {
@@ -237,11 +237,11 @@ const openClawStatusTagType = computed(() => {
 const openClawCommandData = computed(() => buildOpenClawCommands(openClawEndpointData.value.endpoint))
 const openClawCommandDisplayText = computed(() => {
   if (openClawCommandData.value.ready) return openClawCommandData.value.copyText
-  if (!props.agentId) return '暂无安装命令，请先保存智能体。'
-  return '暂无安装命令，请刷新后重试。'
+  if (!props.agentId) return 'Chưa có lệnh cài đặt, hãy lưu Trợ lý AI trước.'
+  return 'Chưa có lệnh cài đặt, hãy làm mới rồi thử lại.'
 })
 const openClawSummaryText = computed(() => {
-  if (!openClawLoaded.value) return '展开后加载状态与命令'
+  if (!openClawLoaded.value) return 'Mở ra để tải trạng thái và lệnh'
   return openClawStatusText.value
 })
 
@@ -293,7 +293,7 @@ const loadMcpEndpoint = async ({ showError = false } = {}) => {
       client_count: 0
     }
     mcpEndpointLoaded.value = true
-    if (showError) ElMessage.error(error.response?.data?.error || '获取MCP接入点失败')
+    if (showError) ElMessage.error(error.response?.data?.error || 'Lấy điểm truy cập MCP thất bại')
     return false
   }
 }
@@ -311,7 +311,7 @@ const refreshMcpTools = async () => {
     }
   } catch (error) {
     mcpTools.value = []
-    ElMessage.error(error.response?.data?.error || '获取工具列表失败')
+    ElMessage.error(error.response?.data?.error || 'Lấy danh sách công cụ thất bại')
   } finally {
     toolsLoading.value = false
   }
@@ -409,7 +409,7 @@ const formatMcpCallResult = (payload) => {
 
 const callAgentMcpTool = async () => {
   if (!mcpCallForm.value.tool_name) {
-    ElMessage.warning('请选择工具')
+    ElMessage.warning('Hãy chọn công cụ')
     return
   }
 
@@ -417,7 +417,7 @@ const callAgentMcpTool = async () => {
   try {
     argumentsObj = mcpCallForm.value.argumentsText ? JSON.parse(mcpCallForm.value.argumentsText) : {}
   } catch (_) {
-    ElMessage.error('参数JSON格式错误')
+    ElMessage.error('Lỗi định dạng JSON tham số')
     return
   }
 
@@ -428,10 +428,10 @@ const callAgentMcpTool = async () => {
       arguments: argumentsObj
     })
     mcpCallResult.value = formatMcpCallResult(response.data?.data || {})
-    ElMessage.success('MCP工具调用成功')
+    ElMessage.success('Gọi công cụ MCP thành công')
   } catch (error) {
     mcpCallResult.value = JSON.stringify(error.response?.data || { error: error.message }, null, 2)
-    ElMessage.error('MCP工具调用失败')
+    ElMessage.error('Gọi công cụ MCP thất bại')
   } finally {
     callingTool.value = false
   }
@@ -439,14 +439,14 @@ const callAgentMcpTool = async () => {
 
 const copyMcpEndpoint = async () => {
   if (!mcpEndpointData.value.endpoint) {
-    ElMessage.warning('暂无可复制的 MCP 接入点')
+    ElMessage.warning('Không có điểm truy cập MCP để sao chép')
     return
   }
   try {
     await navigator.clipboard.writeText(mcpEndpointData.value.endpoint)
-    ElMessage.success('MCP接入点URL已复制')
+    ElMessage.success('Đã sao chép URL điểm truy cập MCP')
   } catch (_) {
-    ElMessage.error('复制失败')
+    ElMessage.error('Sao chép thất bại')
   }
 }
 
@@ -471,7 +471,7 @@ const fetchOpenClawEndpoint = async ({ showError = true } = {}) => {
       status: 'unknown',
       status_message: error.response?.data?.error || ''
     }
-    if (showError) ElMessage.error(error.response?.data?.error || '获取OpenClaw接入点失败')
+    if (showError) ElMessage.error(error.response?.data?.error || 'Lấy điểm truy cập OpenClaw thất bại')
   } finally {
     openClawEndpointLoading.value = false
   }
@@ -480,32 +480,32 @@ const fetchOpenClawEndpoint = async ({ showError = true } = {}) => {
 const copyOpenClawCommands = async () => {
   const commands = openClawCommandData.value.copyText
   if (!commands) {
-    ElMessage.warning('暂无可复制的 OpenClaw 角色配置命令')
+    ElMessage.warning('Không có lệnh cấu hình vai trò OpenClaw để sao chép')
     return
   }
   try {
     await navigator.clipboard.writeText(commands)
-    ElMessage.success('OpenClaw 角色配置命令已复制')
+    ElMessage.success('Đã sao chép lệnh cấu hình vai trò OpenClaw')
   } catch (_) {
-    ElMessage.error('复制失败，请手动复制')
+    ElMessage.error('Sao chép thất bại, hãy sao chép thủ công')
   }
 }
 
 const formatOpenClawChatResult = (reply, latency) => {
-  const lines = [`回复: ${String(reply || '') || '(空)'}`]
-  if (Number.isFinite(latency)) lines.push(`耗时: ${latency}ms`)
+  const lines = [`Trả lời: ${String(reply || '') || '(trống)'}`]
+  if (Number.isFinite(latency)) lines.push(`Tốn: ${latency}ms`)
   return lines.join('\n')
 }
 
 const testOpenClawChat = async () => {
   const message = String(openClawChatTestForm.value.message || '').trim()
   if (!message) {
-    ElMessage.warning('请输入测试消息')
+    ElMessage.warning('Nhập tin nhắn kiểm tra')
     return
   }
 
   openClawChatTesting.value = true
-  openClawChatTestResult.value = '连接中...'
+  openClawChatTestResult.value = 'Đang kết nối...'
   try {
     const requestTimeoutMs = 610000
     const timeoutMs = 600000
@@ -523,7 +523,7 @@ const testOpenClawChat = async () => {
       onEvent: (event, payload) => {
         const envelope = normalizePayload(payload)
         if (event === 'start') {
-          openClawChatTestResult.value = '已连接，等待回复...'
+          openClawChatTestResult.value = 'Đã kết nối, đang chờ trả lời...'
           return
         }
         if (event === 'chunk') {
@@ -532,7 +532,7 @@ const testOpenClawChat = async () => {
           if (chunk) chunks.push(chunk)
           const reply = String(data.reply || chunks.join(''))
           const latency = Number(data.latency_ms)
-          openClawChatTestResult.value = `流式回复中...\n${formatOpenClawChatResult(reply, latency)}`
+          openClawChatTestResult.value = `Đang nhận trả lời streaming...\n${formatOpenClawChatResult(reply, latency)}`
           return
         }
         if (event === 'result') {
@@ -544,17 +544,17 @@ const testOpenClawChat = async () => {
         }
         if (event === 'error') {
           const data = normalizePayload(envelope.data)
-          const messageText = String(envelope.error || data.error || 'OpenClaw对话测试失败')
+          const messageText = String(envelope.error || data.error || 'Kiểm tra trò chuyện OpenClaw thất bại')
           const partialReply = String(data.reply || chunks.join(''))
           streamError = messageText
           openClawChatTestResult.value = partialReply
-            ? `错误: ${messageText}\n已接收: ${partialReply}`
-            : `错误: ${messageText}`
+            ? `Lỗi: ${messageText}\nĐã nhận: ${partialReply}`
+            : `Lỗi: ${messageText}`
           return
         }
         if (event === 'done') {
           if (!finalData) finalData = normalizePayload(envelope.data)
-          if (envelope.ok === false && !streamError) streamError = 'OpenClaw对话测试失败'
+          if (envelope.ok === false && !streamError) streamError = 'Kiểm tra trò chuyện OpenClaw thất bại'
         }
       }
     })
@@ -564,7 +564,7 @@ const testOpenClawChat = async () => {
       const reply = String(data.reply || '')
       const latency = Number(data.latency_ms)
       openClawChatTestResult.value = formatOpenClawChatResult(reply, latency)
-      ElMessage.success('OpenClaw对话测试成功')
+      ElMessage.success('Kiểm tra trò chuyện OpenClaw thành công')
       return
     }
 
@@ -576,12 +576,12 @@ const testOpenClawChat = async () => {
     } else if (chunks.length > 0) {
       openClawChatTestResult.value = formatOpenClawChatResult(chunks.join(''), Number.NaN)
     } else {
-      throw new Error('未收到OpenClaw返回内容')
+      throw new Error('Không nhận được nội dung trả về từ OpenClaw')
     }
-    ElMessage.success('OpenClaw对话测试成功')
+    ElMessage.success('Kiểm tra trò chuyện OpenClaw thành công')
   } catch (error) {
-    const msg = error.response?.data?.error || error.message || 'OpenClaw对话测试失败'
-    openClawChatTestResult.value = `错误: ${msg}`
+    const msg = error.response?.data?.error || error.message || 'Kiểm tra trò chuyện OpenClaw thất bại'
+    openClawChatTestResult.value = `Lỗi: ${msg}`
     ElMessage.error(msg)
   } finally {
     openClawChatTesting.value = false

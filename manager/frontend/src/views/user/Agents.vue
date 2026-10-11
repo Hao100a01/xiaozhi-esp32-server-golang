@@ -2,28 +2,28 @@
   <div class="agents-page">
     <section class="page-toolbar apple-surface">
       <div class="toolbar-chips">
-        <span class="apple-chip is-primary">智能体 {{ agentsCountText }}</span>
-        <span class="apple-chip is-success">设备 {{ devicesCountText }}</span>
-        <span class="apple-chip">在线 {{ onlineDevicesCountText }}</span>
+        <span class="apple-chip is-primary">Trợ lý AI {{ agentsCountText }}</span>
+        <span class="apple-chip is-success">Thiết bị {{ devicesCountText }}</span>
+        <span class="apple-chip">Trực tuyến {{ onlineDevicesCountText }}</span>
       </div>
 
       <div class="toolbar-actions">
         <el-button type="primary" @click="showAddAgentDialog = true">
           <el-icon><Plus /></el-icon>
-          添加智能体
+          Thêm trợ lý AI
         </el-button>
         <el-button plain @click="openAddDeviceDialog">
           <el-icon><Monitor /></el-icon>
-          添加设备
+          Thêm thiết bị
         </el-button>
         <el-button plain @click="openInjectMessageDialog">
           <el-icon><ChatDotRound /></el-icon>
-          语音推送
+          Đẩy thoại
         </el-button>
       </div>
     </section>
 
-    <section v-if="initialLoading" class="agents-grid agents-grid-loading" aria-label="智能体加载中">
+    <section v-if="initialLoading" class="agents-grid agents-grid-loading" aria-label="Đang tải trợ lý AI">
       <article v-for="index in 3" :key="index" class="agent-card agent-card-skeleton apple-surface">
         <div class="skeleton-card-header">
           <div class="skeleton-avatar skeleton-shimmer"></div>
@@ -55,12 +55,12 @@
       <el-card class="welcome-card apple-surface">
         <div class="welcome-content">
           <el-icon size="64" color="var(--apple-primary)"><Monitor /></el-icon>
-          <h3>先创建第一个智能体</h3>
-          <p>创建后就能继续绑定设备、配置知识库和语音能力。</p>
+          <h3>Tạo trợ lý AI đầu tiên</h3>
+          <p>Sau khi tạo có thể liên kết thiết bị, cấu hình kho tri thức và khả năng thoại.</p>
           <div class="welcome-actions">
             <el-button type="primary" size="large" @click="showAddAgentDialog = true">
               <el-icon><Plus /></el-icon>
-              创建智能体
+              Tạo trợ lý AI
             </el-button>
           </div>
         </div>
@@ -76,12 +76,12 @@
             </div>
             <div class="agent-info">
               <h3 class="agent-name">{{ agent.name }}</h3>
-              <p class="agent-desc">昵称：{{ agent.nickname || agent.name }}</p>
+              <p class="agent-desc">Biệt danh: {{ agent.nickname || agent.name }}</p>
             </div>
           </div>
 
           <div class="agent-state-grid">
-            <el-tooltip :content="`记忆类型：${getMemoryModeText(agent)}`" placement="top" :show-after="200">
+            <el-tooltip :content="`Loại ghi nhớ: ${getMemoryModeText(agent)}`" placement="top" :show-after="200">
               <div class="agent-state-badge is-icon-only" :class="`is-memory-${getMemoryModeKey(agent)}`">
                 <img class="state-image-icon state-image-icon--memory" :src="memoryStatusIcon" alt="" />
               </div>
@@ -108,16 +108,16 @@
         </div>
 
         <div class="agent-summary">
-          <div class="summary-row" :title="`音色模型：${getVoiceModelText(agent)}`">
-            <span class="summary-label">音色模型：</span>
+          <div class="summary-row" :title="`Mô hình giọng: ${getVoiceModelText(agent)}`">
+            <span class="summary-label">Mô hình giọng:</span>
             <span class="summary-text">{{ truncateText(getVoiceModelText(agent), 18) }}</span>
           </div>
-          <div class="summary-row" :title="`语言模型：${getLLMModelText(agent)}`">
-            <span class="summary-label">语言模型：</span>
+          <div class="summary-row" :title="`Mô hình ngôn ngữ: ${getLLMModelText(agent)}`">
+            <span class="summary-label">Mô hình ngôn ngữ:</span>
             <span class="summary-text">{{ truncateText(getLLMModelText(agent), 16) }}</span>
           </div>
-          <div class="summary-row" :title="`设备数量：${getDeviceCountText(agent)}`">
-            <span class="summary-label">设备数量：</span>
+          <div class="summary-row" :title="`Số thiết bị: ${getDeviceCountText(agent)}`">
+            <span class="summary-label">Số thiết bị:</span>
             <span class="summary-text is-count">{{ getDeviceCountText(agent) }}</span>
           </div>
         </div>
@@ -125,19 +125,19 @@
         <div class="agent-actions">
           <el-button class="agent-action-button agent-action-button-feature" size="small" @click="editAgent(agent.id)">
             <el-icon><Setting /></el-icon>
-            配置
+            Cấu hình
           </el-button>
           <el-button class="agent-action-button" size="small" @click="handleChatHistory(agent.id)">
             <el-icon><ChatDotRound /></el-icon>
-            对话
+            Hội thoại
           </el-button>
           <el-button class="agent-action-button" size="small" @click="handleManageDevices(agent.id)">
             <el-icon><Connection /></el-icon>
-            设备
+            Thiết bị
           </el-button>
           <el-button class="agent-action-button agent-action-button-danger" size="small" @click="handleDeleteAgent(agent)">
             <el-icon><Delete /></el-icon>
-            删除
+            Xóa
           </el-button>
         </div>
       </article>
@@ -145,7 +145,7 @@
 
     <el-dialog
       v-model="showAddAgentDialog"
-      title="添加智能体"
+      title="Thêm trợ lý AI"
       width="560px"
       class="agent-dialog"
       :before-close="handleCloseAddAgent"
@@ -158,9 +158,9 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCloseAddAgent">取消</el-button>
+          <el-button @click="handleCloseAddAgent">Hủy</el-button>
           <el-button type="primary" :loading="adding" @click="handleAddAgent">
-            {{ adding ? '创建中...' : '创建智能体' }}
+            {{ adding ? 'Đang tạo...' : 'Tạo trợ lý AI' }}
           </el-button>
         </div>
       </template>
@@ -168,7 +168,7 @@
 
     <el-dialog
       v-model="showAddDeviceDialog"
-      title="添加设备"
+      title="Thêm thiết bị"
       width="520px"
       :close-on-click-modal="false"
       @closed="resetAddDeviceForm"
@@ -181,9 +181,9 @@
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="showAddDeviceDialog = false">取消</el-button>
+          <el-button @click="showAddDeviceDialog = false">Hủy</el-button>
           <el-button type="primary" :loading="addingDevice" @click="handleAddDevice">
-            {{ addingDevice ? '绑定中...' : '绑定设备' }}
+            {{ addingDevice ? 'Đang liên kết...' : 'Liên kết thiết bị' }}
           </el-button>
         </div>
       </template>
@@ -238,7 +238,7 @@ const onlineDevicesCountText = computed(() => initialLoading.value ? '--' : onli
 const knowledgeBaseNameMap = computed(() => {
   const map = new Map()
   for (const kb of knowledgeBases.value) {
-    map.set(Number(kb.id), kb.name || `知识库 #${kb.id}`)
+    map.set(Number(kb.id), kb.name || `Kho tri thức #${kb.id}`)
   }
   return map
 })
@@ -265,7 +265,7 @@ const loadAgents = async () => {
     const response = await api.get('/user/agents')
     agents.value = response.data.data || []
   } catch (error) {
-    ElMessage.error('加载智能体列表失败')
+    ElMessage.error('Tải danh sách trợ lý AI thất bại')
   }
 }
 
@@ -275,7 +275,7 @@ const loadDevices = async () => {
     allDevices.value = response.data.data || []
   } catch (error) {
     allDevices.value = []
-    ElMessage.error('加载设备列表失败')
+    ElMessage.error('Tải danh sách thiết bị thất bại')
   }
 }
 
@@ -285,7 +285,7 @@ const loadKnowledgeBases = async () => {
     knowledgeBases.value = response.data.data || []
   } catch (error) {
     knowledgeBases.value = []
-    console.error('加载知识库列表失败:', error)
+    console.error('Tải danh sách kho tri thức thất bại:', error)
   }
 }
 
@@ -302,12 +302,12 @@ const handleAddAgent = async () => {
   try {
     const response = await api.post('/user/agents', agentFormRef.value.buildPayload())
     if (response.data.success) {
-      ElMessage.success('智能体添加成功')
+      ElMessage.success('Thêm trợ lý AI thành công')
       handleCloseAddAgent()
       await loadAgents()
     }
   } catch (error) {
-    ElMessage.error(error.response?.data?.error || '添加智能体失败')
+    ElMessage.error(error.response?.data?.error || 'Thêm trợ lý AI thất bại')
   } finally {
     adding.value = false
   }
@@ -320,7 +320,7 @@ const resetAddDeviceForm = () => {
 
 const openAddDeviceDialog = () => {
   if (!agents.value.length) {
-    ElMessage.warning('请先创建智能体，再绑定设备')
+    ElMessage.warning('Hãy tạo trợ lý AI trước, rồi mới liên kết thiết bị')
     return
   }
   resetAddDeviceForm()
@@ -337,7 +337,7 @@ const handleAddDevice = async () => {
 
   const agentId = deviceForm.value.agent_id
   if (!agentId) {
-    ElMessage.warning('请选择目标智能体')
+    ElMessage.warning('Chọn trợ lý AI đích')
     return
   }
 
@@ -345,12 +345,12 @@ const handleAddDevice = async () => {
   try {
     const response = await api.post(`/user/agents/${agentId}/devices`, deviceFormRef.value.buildPayload())
     if (response.data?.success) {
-      ElMessage.success('设备绑定成功')
+      ElMessage.success('Liên kết thiết bị thành công')
       showAddDeviceDialog.value = false
       await handleDeviceBound()
     }
   } catch (error) {
-    ElMessage.error(error.response?.data?.error || '设备绑定失败')
+    ElMessage.error(error.response?.data?.error || 'Liên kết thiết bị thất bại')
   } finally {
     addingDevice.value = false
   }
@@ -358,7 +358,7 @@ const handleAddDevice = async () => {
 
 const openInjectMessageDialog = () => {
   if (!allDevices.value.length) {
-    ElMessage.warning('请先绑定设备，再进行语音推送')
+    ElMessage.warning('Hãy liên kết thiết bị trước, rồi mới đẩy thoại')
     return
   }
   showInjectMessageDialog.value = true
@@ -392,33 +392,33 @@ const handleManageDevices = (id) => {
 
 const handleDeleteAgent = async (agent) => {
   if (!canDeleteAgent(agent)) {
-    ElMessage.warning('该智能体仍绑定设备，请先移除所有设备后再删除')
+    ElMessage.warning('Trợ lý AI này vẫn còn thiết bị liên kết, hãy gỡ hết thiết bị trước khi xóa')
     return
   }
 
   try {
     await ElMessageBox.confirm(
-      `确定要删除智能体 "${agent.name}" 吗？`,
-      '确认删除',
+      `Chắc chắn xóa trợ lý AI "${agent.name}"?`,
+      'Xác nhận xóa',
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
         type: 'warning'
       }
     )
 
     await api.delete(`/user/agents/${agent.id}`)
-    ElMessage.success('智能体删除成功')
+    ElMessage.success('Xóa trợ lý AI thành công')
     await loadAgents()
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error(error.response?.data?.error || '智能体删除失败')
+      ElMessage.error(error.response?.data?.error || 'Xóa trợ lý AI thất bại')
     }
   }
 }
 
 const truncateText = (value, maxLength = 14) => {
-  const text = String(value || '').trim() || '未设置'
+  const text = String(value || '').trim() || 'Chưa đặt'
   if (text.length <= maxLength) {
     return text
   }
@@ -433,20 +433,20 @@ const getVoiceModelText = (agent) => {
     return `${ttsType} · ${voiceName}`
   }
   if (ttsType) {
-    return `${ttsType} · 默认音色`
+    return `${ttsType} · Giọng mặc định`
   }
   if (voiceName) {
     return voiceName
   }
-  return '未设置'
+  return 'Chưa đặt'
 }
 
 const getLLMModelText = (agent) => {
-  return agent.llm_config?.name?.trim() || agent.llm_config?.provider?.trim() || '未设置'
+  return agent.llm_config?.name?.trim() || agent.llm_config?.provider?.trim() || 'Chưa đặt'
 }
 
 const getDeviceCountText = (agent) => {
-  return `${getAgentDeviceCount(agent.id)} 台`
+  return `${getAgentDeviceCount(agent.id)} thiết bị`
 }
 
 const getMemoryModeKey = (agent) => {
@@ -458,9 +458,9 @@ const getMemoryModeKey = (agent) => {
 
 const getMemoryModeText = (agent) => {
   const key = getMemoryModeKey(agent)
-  if (key === 'none') return '无记忆'
-  if (key === 'long') return '长记忆'
-  return '短记忆'
+  if (key === 'none') return 'Không có ghi nhớ'
+  if (key === 'long') return 'Ghi nhớ dài'
+  return 'Ghi nhớ ngắn'
 }
 
 const getKnowledgeBaseIds = (agent) => {
@@ -472,15 +472,15 @@ const getKnowledgeBaseCount = (agent) => {
 }
 
 const getKnowledgeBaseNames = (agent) => {
-  return getKnowledgeBaseIds(agent).map((id) => knowledgeBaseNameMap.value.get(Number(id)) || `知识库 #${id}`)
+  return getKnowledgeBaseIds(agent).map((id) => knowledgeBaseNameMap.value.get(Number(id)) || `Kho tri thức #${id}`)
 }
 
 const getKnowledgeBaseTooltip = (agent) => {
   const names = getKnowledgeBaseNames(agent)
   if (names.length === 0) {
-    return '关联知识库：未关联'
+    return 'Kho tri thức liên kết: chưa liên kết'
   }
-  return `关联知识库：${names.join('、')}`
+  return `Kho tri thức liên kết: ${names.join(', ')}`
 }
 
 const normalizeMcpServiceNames = (raw) => {
@@ -491,11 +491,11 @@ const normalizeMcpServiceNames = (raw) => {
 }
 
 const getConnectionStatusText = (state) => {
-  if (!state || state.loading) return '检测中'
-  if (state.connected || state.status === 'online') return '已连接'
-  if (state.status === 'offline') return '未连接'
-  if (state.status_message) return '连接未知'
-  return '未连接'
+  if (!state || state.loading) return 'Đang kiểm tra'
+  if (state.connected || state.status === 'online') return 'Đã kết nối'
+  if (state.status === 'offline') return 'Chưa kết nối'
+  if (state.status_message) return 'Không rõ kết nối'
+  return 'Chưa kết nối'
 }
 
 const getMcpStatusKey = (agent) => {
@@ -507,26 +507,26 @@ const getMcpStatusKey = (agent) => {
 }
 
 const getGlobalMcpServiceCountText = () => {
-  if (globalMcpServiceCountError.value) return '检测失败'
-  if (globalMcpServiceCount.value === null) return '检测中'
-  return `${globalMcpServiceCount.value} 个`
+  if (globalMcpServiceCountError.value) return 'Kiểm tra thất bại'
+  if (globalMcpServiceCount.value === null) return 'Đang kiểm tra'
+  return `${globalMcpServiceCount.value} mục`
 }
 
 const getMcpServiceScopeText = (agent) => {
   const count = normalizeMcpServiceNames(agent.mcp_service_names).length
-  return count > 0 ? `已选择 ${count} 个服务` : '跟随全局配置'
+  return count > 0 ? `Đã chọn ${count} dịch vụ` : 'Theo cấu hình toàn cục'
 }
 
 const getMcpClientCountText = (connection) => {
   const count = Number(connection?.client_count || 0)
   if (count <= 0) return ''
-  return `（${count} 个客户端）`
+  return `(${count} máy khách)`
 }
 
 const getMcpStatusTooltip = (agent) => {
   const connection = mcpConnectionStatusMap[String(agent.id)]
   const connectionText = getConnectionStatusText(connection)
-  return `智能体WebSocket：${connectionText}${getMcpClientCountText(connection)}｜全局MCP服务：${getGlobalMcpServiceCountText()}｜服务范围：${getMcpServiceScopeText(agent)}`
+  return `WebSocket trợ lý AI: ${connectionText}${getMcpClientCountText(connection)}｜Dịch vụ MCP toàn cục: ${getGlobalMcpServiceCountText()}｜Phạm vi dịch vụ: ${getMcpServiceScopeText(agent)}`
 }
 
 const parseOpenClawConfig = (agent) => {
@@ -550,8 +550,8 @@ const getOpenClawStatusKey = (agent) => {
 
 const getOpenClawStatusTooltip = (agent) => {
   const connection = openClawConnectionStatusMap[String(agent.id)]
-  const configText = parseOpenClawConfig(agent).allowed ? '已启用' : '未启用'
-  return `OpenClaw状态：${configText}｜连接状态：${getConnectionStatusText(connection)}`
+  const configText = parseOpenClawConfig(agent).allowed ? 'Đã bật' : 'Chưa bật'
+  return `Trạng thái OpenClaw: ${configText}｜Trạng thái kết nối: ${getConnectionStatusText(connection)}`
 }
 
 const ensureMcpConnectionStatus = async (agentId) => {
@@ -585,7 +585,7 @@ const ensureMcpConnectionStatus = async (agentId) => {
       loaded: true,
       connected: false,
       status: 'unknown',
-      status_message: error.response?.data?.error || error.message || '状态获取失败',
+      status_message: error.response?.data?.error || error.message || 'Lấy trạng thái thất bại',
       client_count: 0
     }
   }
@@ -599,8 +599,8 @@ const loadGlobalMcpServiceCount = async () => {
     globalMcpServiceCount.value = Array.isArray(options) ? options.length : 0
   } catch (error) {
     globalMcpServiceCount.value = null
-    globalMcpServiceCountError.value = error.response?.data?.error || error.message || '加载失败'
-    console.error('加载全局MCP服务数量失败:', error)
+    globalMcpServiceCountError.value = error.response?.data?.error || error.message || 'Tải thất bại'
+    console.error('Tải số lượng dịch vụ MCP toàn cục thất bại:', error)
   }
 }
 
@@ -637,7 +637,7 @@ const ensureOpenClawConnectionStatus = async (agentId) => {
       loaded: true,
       connected: false,
       status: 'unknown',
-      status_message: error.response?.data?.error || error.message || '状态获取失败'
+      status_message: error.response?.data?.error || error.message || 'Lấy trạng thái thất bại'
     }
   }
 }

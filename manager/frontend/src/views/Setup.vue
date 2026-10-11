@@ -3,30 +3,30 @@
     <div class="setup-shell">
       <section class="setup-intro">
         <p class="setup-eyebrow">FIRST RUN EXPERIENCE</p>
-        <h1>用更轻的方式完成系统初始化。</h1>
-        <p>先创建管理员账户，再进入统一的控制台和配置向导。这一页也同步切换到新的明亮 Apple 风风格。</p>
+        <h1>Hoàn tất khởi tạo hệ thống theo cách nhẹ nhàng hơn.</h1>
+        <p>Trước tiên tạo tài khoản quản trị, sau đó vào bảng điều khiển thống nhất và trình hướng dẫn cấu hình. Trang này cũng đồng bộ chuyển sang phong cách Apple sáng mới.</p>
       </section>
 
       <div class="setup-card">
         <div class="setup-header">
           <p class="setup-card-eyebrow">SYSTEM SETUP</p>
-          <h1>系统初始化</h1>
-          <p>欢迎使用小智管理系统，请完成初始设置</p>
+          <h1>Khởi tạo hệ thống</h1>
+          <p>Chào mừng bạn đến với Hệ thống quản lý Tiểu Trí, vui lòng hoàn tất thiết lập ban đầu</p>
         </div>
 
         <div v-if="!initialized" class="setup-status">
           <div class="loading-spinner" v-if="checking">
             <div class="spinner"></div>
-            <p>正在检查系统状态...</p>
+            <p>Đang kiểm tra trạng thái hệ thống...</p>
           </div>
 
           <div v-else-if="needsSetup" class="setup-form">
-            <h2>创建管理员账户</h2>
-            <p>请设置管理员账户信息，用于系统管理</p>
+            <h2>Tạo tài khoản quản trị</h2>
+            <p>Vui lòng thiết lập thông tin tài khoản quản trị để quản lý hệ thống</p>
 
             <form @submit.prevent="initializeSystem">
               <div class="form-group">
-                <label for="username">管理员用户名</label>
+                <label for="username">Tên đăng nhập quản trị</label>
                 <input
                   id="username"
                   v-model="form.admin_username"
@@ -34,23 +34,23 @@
                   required
                   minlength="3"
                   maxlength="50"
-                  placeholder="请输入管理员用户名"
+                  placeholder="Nhập tên đăng nhập quản trị"
                 />
               </div>
 
               <div class="form-group">
-                <label for="email">管理员邮箱</label>
+                <label for="email">Email quản trị</label>
                 <input
                   id="email"
                   v-model="form.admin_email"
                   type="email"
                   required
-                  placeholder="请输入管理员邮箱"
+                  placeholder="Nhập email quản trị"
                 />
               </div>
 
               <div class="form-group">
-                <label for="password">管理员密码</label>
+                <label for="password">Mật khẩu quản trị</label>
                 <input
                   id="password"
                   v-model="form.admin_password"
@@ -58,18 +58,18 @@
                   required
                   minlength="6"
                   maxlength="100"
-                  placeholder="请输入管理员密码（至少6位）"
+                  placeholder="Nhập mật khẩu quản trị (ít nhất 6 ký tự)"
                 />
               </div>
 
               <div class="form-group">
-                <label for="confirmPassword">确认密码</label>
+                <label for="confirmPassword">Xác nhận mật khẩu</label>
                 <input
                   id="confirmPassword"
                   v-model="confirmPassword"
                   type="password"
                   required
-                  placeholder="请再次输入密码"
+                  placeholder="Nhập lại mật khẩu"
                 />
               </div>
 
@@ -78,8 +78,8 @@
               </div>
 
               <button type="submit" :disabled="initializing" class="setup-btn">
-                <span v-if="initializing">正在初始化...</span>
-                <span v-else>开始初始化</span>
+                <span v-if="initializing">Đang khởi tạo...</span>
+                <span v-else>Bắt đầu khởi tạo</span>
               </button>
             </form>
           </div>
@@ -88,9 +88,9 @@
             <div class="success-icon">
               <span class="success-badge">OK</span>
             </div>
-            <h2>系统已初始化</h2>
-            <p>系统已完成初始化，请使用管理员账户登录</p>
-            <router-link to="/login" class="login-btn">前往登录</router-link>
+            <h2>Hệ thống đã được khởi tạo</h2>
+            <p>Hệ thống đã hoàn tất khởi tạo, vui lòng đăng nhập bằng tài khoản quản trị</p>
+            <router-link to="/login" class="login-btn">Đến trang đăng nhập</router-link>
           </div>
         </div>
 
@@ -98,13 +98,13 @@
           <div class="success-icon">
             <span class="success-badge">OK</span>
           </div>
-          <h2>初始化成功！</h2>
-          <p>系统已成功初始化，管理员账户已创建</p>
+          <h2>Khởi tạo thành công!</h2>
+          <p>Hệ thống đã khởi tạo thành công, tài khoản quản trị đã được tạo</p>
           <div class="admin-info">
-            <p><strong>用户名：</strong>{{ adminInfo.username }}</p>
-            <p><strong>邮箱：</strong>{{ adminInfo.email }}</p>
+            <p><strong>Tên đăng nhập:</strong>{{ adminInfo.username }}</p>
+            <p><strong>Email:</strong>{{ adminInfo.email }}</p>
           </div>
-          <router-link to="/login" class="login-btn">前往登录</router-link>
+          <router-link to="/login" class="login-btn">Đến trang đăng nhập</router-link>
         </div>
       </div>
     </div>
@@ -143,21 +143,21 @@ export default {
         if (response.data.needs_setup) {
           needsSetup.value = true
         } else {
-          // 系统已初始化，跳转到登录页
+          // Hệ thống đã khởi tạo, chuyển đến trang đăng nhập
           router.push('/login')
         }
       } catch (error) {
-        console.error('检查系统状态失败:', error)
-        errorMessage.value = '检查系统状态失败，请刷新页面重试'
+        console.error('Kiểm tra trạng thái hệ thống thất bại:', error)
+        errorMessage.value = 'Kiểm tra trạng thái hệ thống thất bại, vui lòng tải lại trang và thử lại'
       } finally {
         checking.value = false
       }
     }
 
     const initializeSystem = async () => {
-      // 验证密码确认
+      // Kiểm tra xác nhận mật khẩu
       if (form.value.admin_password !== confirmPassword.value) {
-        errorMessage.value = '两次输入的密码不一致'
+        errorMessage.value = 'Hai lần nhập mật khẩu không khớp'
         return
       }
 
@@ -170,11 +170,11 @@ export default {
         adminInfo.value = response.data.admin
         initialized.value = true
       } catch (error) {
-        console.error('系统初始化失败:', error)
+        console.error('Khởi tạo hệ thống thất bại:', error)
         if (error.response?.data?.error) {
           errorMessage.value = error.response.data.error
         } else {
-          errorMessage.value = '系统初始化失败，请重试'
+          errorMessage.value = 'Khởi tạo hệ thống thất bại, vui lòng thử lại'
         }
       } finally {
         initializing.value = false

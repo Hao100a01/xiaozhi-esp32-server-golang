@@ -29,34 +29,34 @@ const authStore = useAuthStore()
 
 const activeTab = ref('')
 
-// 根据用户角色定义标签栏
+// Định nghĩa thanh tab theo vai trò người dùng
 const tabs = computed(() => {
   if (authStore.isAdmin) {
-    // 管理员标签栏
+    // Thanh tab quản trị viên
     return [
-      { name: 'dashboard', label: '首页', icon: 'home-o', path: '/dashboard' },
-      { name: 'config', label: '配置', icon: 'setting-o', path: '/admin/vad-config' },
-      { name: 'manage', label: '管理', icon: 'apps-o', path: '/admin/users' },
-      { name: 'more', label: '更多', icon: 'ellipsis', path: '/more' }
+      { name: 'dashboard', label: 'Trang chủ', icon: 'home-o', path: '/dashboard' },
+      { name: 'config', label: 'Cấu hình', icon: 'setting-o', path: '/admin/vad-config' },
+      { name: 'manage', label: 'Quản lý', icon: 'apps-o', path: '/admin/users' },
+      { name: 'more', label: 'Thêm', icon: 'ellipsis', path: '/more' }
     ]
   } else {
-    // 普通用户标签栏
+    // Thanh tab người dùng thường
     return [
-      { name: 'agents', label: '智能体', icon: 'apps-o', path: '/agents' },
-      { name: 'speakers', label: '声纹', icon: 'user-o', path: '/user/speakers' },
-      { name: 'more', label: '更多', icon: 'ellipsis', path: '/more' }
+      { name: 'agents', label: 'Trợ lý AI', icon: 'apps-o', path: '/agents' },
+      { name: 'speakers', label: 'Giọng nói', icon: 'user-o', path: '/user/speakers' },
+      { name: 'more', label: 'Thêm', icon: 'ellipsis', path: '/more' }
     ]
   }
 })
 
-// 根据当前路由设置活动标签
+// Đặt tab đang hoạt động theo route hiện tại
 const updateActiveTab = () => {
   const currentPath = route.path
   const currentTab = tabs.value.find(tab => {
     if (tab.path === currentPath) {
       return true
     }
-    // 支持路径前缀匹配
+    // Hỗ trợ khớp tiền tố đường dẫn
     if (currentPath.startsWith(tab.path)) {
       return true
     }
@@ -68,7 +68,7 @@ const updateActiveTab = () => {
   }
 }
 
-// 标签切换处理
+// Xử lý chuyển tab
 const handleTabChange = (name) => {
   const tab = tabs.value.find(item => item.name === name)
   if (tab && tab.path !== route.path) {
@@ -76,7 +76,7 @@ const handleTabChange = (name) => {
   }
 }
 
-// 监听路由变化
+// Theo dõi thay đổi route
 watch(
   () => route.path,
   () => {

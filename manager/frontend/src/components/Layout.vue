@@ -3,17 +3,17 @@
     <aside class="sidebar-shell">
       <div class="sidebar-card apple-surface">
         <div class="brand-panel">
-          <img class="brand-mark" :src="appLogo" alt="小智管理系统" />
+          <img class="brand-mark" :src="appLogo" alt="Hệ thống quản lý Tiểu Trí" />
           <div class="brand-copy">
             <p class="brand-eyebrow">Control Center</p>
-            <h3>小智管理系统</h3>
-            <p>{{ authStore.isAdmin ? 'AI 服务与设备管理台' : '设备与智能体工作台' }}</p>
+            <h3>Hệ thống quản lý Tiểu Trí</h3>
+            <p>{{ authStore.isAdmin ? 'Bàn quản trị AI và thiết bị' : 'Bàn làm việc thiết bị và Trợ lý AI' }}</p>
           </div>
         </div>
 
         <div class="sidebar-meta">
-          <span class="apple-chip is-primary">{{ authStore.isAdmin ? '管理员模式' : '用户模式' }}</span>
-          <span class="apple-chip is-success">在线中</span>
+          <span class="apple-chip is-primary">{{ authStore.isAdmin ? 'Chế độ quản trị' : 'Chế độ người dùng' }}</span>
+          <span class="apple-chip is-success">Đang trực tuyến</span>
         </div>
 
         <el-scrollbar class="sidebar-scroll">
@@ -26,99 +26,99 @@
           >
             <el-menu-item v-if="authStore.isAdmin" index="/dashboard">
               <el-icon><House /></el-icon>
-              <span>仪表板</span>
+              <span>Bảng điều khiển</span>
             </el-menu-item>
 
             <el-menu-item v-if="!authStore.isAdmin" index="/agents">
               <el-icon><Connection /></el-icon>
-              <span>智能体管理</span>
+              <span>Quản lý Trợ lý AI</span>
             </el-menu-item>
 
             <el-menu-item v-if="!authStore.isAdmin" index="/user/devices">
               <el-icon><Iphone /></el-icon>
-              <span>设备列表</span>
+              <span>Danh sách thiết bị</span>
             </el-menu-item>
 
             <el-menu-item v-if="!authStore.isAdmin" index="/user/roles">
               <el-icon><User /></el-icon>
-              <span>我的角色</span>
+              <span>Vai trò của tôi</span>
             </el-menu-item>
 
             <el-menu-item v-if="!authStore.isAdmin" index="/speakers">
               <el-icon><Microphone /></el-icon>
-              <span>声纹管理</span>
+              <span>Quản lý giọng nói</span>
             </el-menu-item>
 
             <el-menu-item v-if="!authStore.isAdmin" index="/voice-clones">
               <el-icon><Microphone /></el-icon>
-              <span>声音复刻</span>
+              <span>Sao chép giọng nói</span>
             </el-menu-item>
 
             <el-menu-item v-if="!authStore.isAdmin" index="/user/knowledge-bases">
               <el-icon><Document /></el-icon>
-              <span>我的知识库</span>
+              <span>Kho tri thức của tôi</span>
             </el-menu-item>
 
             <el-sub-menu v-if="authStore.isAdmin" index="/admin/service-config">
               <template #title>
                 <el-icon><Tools /></el-icon>
-                <span>服务配置</span>
+                <span>Cấu hình dịch vụ</span>
               </template>
-              <el-menu-item index="/admin/ota-config">OTA 配置</el-menu-item>
-              <el-menu-item index="/admin/mqtt-config">MQTT 配置</el-menu-item>
-              <el-menu-item index="/admin/mqtt-server-config">MQTT Server 配置</el-menu-item>
-              <el-menu-item index="/admin/udp-config">UDP 配置</el-menu-item>
+              <el-menu-item index="/admin/ota-config">Cấu hình OTA</el-menu-item>
+              <el-menu-item index="/admin/mqtt-config">Cấu hình MQTT</el-menu-item>
+              <el-menu-item index="/admin/mqtt-server-config">Cấu hình MQTT Server</el-menu-item>
+              <el-menu-item index="/admin/udp-config">Cấu hình UDP</el-menu-item>
               <el-sub-menu index="/admin/mcp-config-group" class="menu-sub-child">
-                <template #title>MCP 配置</template>
-                <el-menu-item class="menu-grandchild" index="/admin/mcp-config">配置</el-menu-item>
-                <el-menu-item class="menu-grandchild" index="/admin/mcp-market">MCP 市场</el-menu-item>
+                <template #title>Cấu hình MCP</template>
+                <el-menu-item class="menu-grandchild" index="/admin/mcp-config">Cấu hình</el-menu-item>
+                <el-menu-item class="menu-grandchild" index="/admin/mcp-market">Chợ MCP</el-menu-item>
               </el-sub-menu>
-              <el-menu-item index="/admin/speaker-config">声纹识别配置</el-menu-item>
-              <el-menu-item index="/admin/chat-settings">聊天设置</el-menu-item>
+              <el-menu-item index="/admin/speaker-config">Cấu hình nhận diện giọng nói</el-menu-item>
+              <el-menu-item index="/admin/chat-settings">Cài đặt trò chuyện</el-menu-item>
             </el-sub-menu>
 
             <el-sub-menu v-if="authStore.isAdmin" index="/admin/ai-config">
               <template #title>
                 <el-icon><Cpu /></el-icon>
-                <span>AI 配置</span>
+                <span>Cấu hình AI</span>
               </template>
-              <el-menu-item index="/admin/vad-config">VAD 配置</el-menu-item>
-              <el-menu-item index="/admin/asr-config">ASR 配置</el-menu-item>
-              <el-menu-item index="/admin/llm-config">LLM 配置</el-menu-item>
-              <el-menu-item index="/admin/tts-config">TTS 配置</el-menu-item>
-              <el-menu-item index="/admin/vision-config">Vision 配置</el-menu-item>
-              <el-menu-item index="/admin/memory-config">Memory 配置</el-menu-item>
-              <el-menu-item index="/admin/knowledge-search-config">知识库检索配置</el-menu-item>
+              <el-menu-item index="/admin/vad-config">Cấu hình VAD</el-menu-item>
+              <el-menu-item index="/admin/asr-config">Cấu hình ASR</el-menu-item>
+              <el-menu-item index="/admin/llm-config">Cấu hình LLM</el-menu-item>
+              <el-menu-item index="/admin/tts-config">Cấu hình TTS</el-menu-item>
+              <el-menu-item index="/admin/vision-config">Cấu hình Vision</el-menu-item>
+              <el-menu-item index="/admin/memory-config">Cấu hình Memory</el-menu-item>
+              <el-menu-item index="/admin/knowledge-search-config">Cấu hình tìm kiếm kho tri thức</el-menu-item>
             </el-sub-menu>
 
             <el-menu-item v-if="authStore.isAdmin" index="/voice-clones">
               <el-icon><Microphone /></el-icon>
-              <span>声音复刻</span>
+              <span>Sao chép giọng nói</span>
             </el-menu-item>
 
             <el-menu-item v-if="authStore.isAdmin" index="/admin/pool-stats">
               <el-icon><DataAnalysis /></el-icon>
-              <span>资源池统计</span>
+              <span>Thống kê pool tài nguyên</span>
             </el-menu-item>
 
             <el-menu-item v-if="authStore.isAdmin" index="/admin/global-roles">
               <el-icon><Setting /></el-icon>
-              <span>全局角色</span>
+              <span>Vai trò toàn cục</span>
             </el-menu-item>
 
             <el-menu-item v-if="authStore.isAdmin" index="/admin/users">
               <el-icon><UserFilled /></el-icon>
-              <span>用户管理</span>
+              <span>Quản lý người dùng</span>
             </el-menu-item>
 
             <el-menu-item v-if="authStore.isAdmin" index="/admin/devices">
               <el-icon><Iphone /></el-icon>
-              <span>设备管理</span>
+              <span>Quản lý thiết bị</span>
             </el-menu-item>
 
             <el-menu-item v-if="authStore.isAdmin" index="/admin/agents">
               <el-icon><Connection /></el-icon>
-              <span>智能体管理</span>
+              <span>Quản lý Trợ lý AI</span>
             </el-menu-item>
           </el-menu>
         </el-scrollbar>
@@ -128,9 +128,9 @@
     <div class="content-shell">
       <AppHeader
         :title="currentPageTitle"
-        :eyebrow="authStore.isAdmin ? 'Admin Console' : 'User Workspace'"
+        :eyebrow="authStore.isAdmin ? 'Bảng điều khiển quản trị' : 'Không gian làm việc'"
         :username="authStore.user?.username || ''"
-        :role-label="authStore.isAdmin ? '管理员' : '普通用户'"
+        :role-label="authStore.isAdmin ? 'Quản trị viên' : 'Người dùng'"
         :initial="usernameInitial"
         :is-admin="authStore.isAdmin"
         :show-admin-shortcuts="authStore.isAdmin"
@@ -175,7 +175,7 @@ const authStore = useAuthStore()
 
 const isMobileDevice = computed(() => isMobile())
 
-const currentPageTitle = computed(() => route.meta?.title || (authStore.isAdmin ? '仪表板' : '我的智能体'))
+const currentPageTitle = computed(() => route.meta?.title || (authStore.isAdmin ? 'Bảng điều khiển' : 'Trợ lý AI của tôi'))
 const isFormHeavyRoute = computed(() => ['AgentEdit', 'UserAgentEdit'].includes(String(route.name || '')))
 
 const usernameInitial = computed(() => {
@@ -191,17 +191,17 @@ const handleCommand = async (command) => {
 
   if (command === 'logout') {
     try {
-      await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      await ElMessageBox.confirm('Bạn có chắc muốn đăng xuất không?', 'Thông báo', {
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
         type: 'warning'
       })
 
       authStore.logout()
-      ElMessage.success('已退出登录')
+      ElMessage.success('Đã đăng xuất')
       router.push('/login')
     } catch {
-      // 用户取消
+      // Người dùng hủy
     }
   }
 }

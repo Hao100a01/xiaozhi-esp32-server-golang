@@ -3,66 +3,66 @@
     <div class="toolbar">
       <el-button type="primary" @click="openAddDialog">
         <el-icon><Plus /></el-icon>
-        添加智能体
+        Thêm Trợ lý AI
       </el-button>
       <el-button @click="loadAgents">
         <el-icon><Refresh /></el-icon>
-        刷新
+        Làm mới
       </el-button>
     </div>
 
     <el-table :data="agents" v-loading="loading" stripe>
       <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column prop="name" label="名称" min-width="140" />
-      <el-table-column label="昵称" min-width="130">
+      <el-table-column prop="name" label="Tên" min-width="140" />
+      <el-table-column label="Biệt danh" min-width="130">
         <template #default="{ row }">{{ row.nickname || row.name }}</template>
       </el-table-column>
-      <el-table-column label="所属用户" width="150">
-        <template #default="{ row }">{{ row.username || `用户 ${row.user_id}` }}</template>
+      <el-table-column label="Người dùng" width="150">
+        <template #default="{ row }">{{ row.username || `Người dùng ${row.user_id}` }}</template>
       </el-table-column>
-      <el-table-column label="角色介绍" min-width="220" show-overflow-tooltip>
-        <template #default="{ row }">{{ row.custom_prompt || '未设置' }}</template>
+      <el-table-column label="Giới thiệu nhân vật" min-width="220" show-overflow-tooltip>
+        <template #default="{ row }">{{ row.custom_prompt || 'Chưa đặt' }}</template>
       </el-table-column>
-      <el-table-column label="语言模型" width="150">
-        <template #default="{ row }">{{ row.llm_config?.name || '未设置' }}</template>
+      <el-table-column label="Mô hình ngôn ngữ" width="150">
+        <template #default="{ row }">{{ row.llm_config?.name || 'Chưa đặt' }}</template>
       </el-table-column>
-      <el-table-column label="TTS / 音色" width="190" show-overflow-tooltip>
+      <el-table-column label="TTS / Giọng đọc" width="190" show-overflow-tooltip>
         <template #default="{ row }">{{ getVoiceText(row) }}</template>
       </el-table-column>
-      <el-table-column label="知识库" width="90">
+      <el-table-column label="Kho tri thức" width="90">
         <template #default="{ row }">{{ row.knowledge_base_ids?.length || 0 }}</template>
       </el-table-column>
-      <el-table-column label="设备" width="90">
+      <el-table-column label="Thiết bị" width="90">
         <template #default="{ row }">{{ row.device_count || 0 }}</template>
       </el-table-column>
-      <el-table-column label="语音识别" width="110">
+      <el-table-column label="Nhận dạng giọng nói" width="110">
         <template #default="{ row }">
           <el-tag :type="getASRSpeedType(row.asr_speed)">{{ getASRSpeedText(row.asr_speed) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="记忆" width="100">
+      <el-table-column label="Bộ nhớ" width="100">
         <template #default="{ row }">
           <el-tag :type="getMemoryModeType(row.memory_mode)">{{ getMemoryModeText(row.memory_mode) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="声纹聊天" width="150">
+      <el-table-column label="Trò chuyện theo giọng nói" width="150">
         <template #default="{ row }">
           <el-tag :type="getSpeakerChatModeType(row.speaker_chat_mode)">{{ getSpeakerChatModeText(row.speaker_chat_mode) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="330" fixed="right">
+      <el-table-column label="Thao tác" width="330" fixed="right">
         <template #default="{ row }">
-          <el-button size="small" @click="editAgent(row)">编辑</el-button>
+          <el-button size="small" @click="editAgent(row)">Sửa</el-button>
           <el-button size="small" type="primary" @click="openDiagnostics(row, 'mcp')">MCP</el-button>
           <el-button size="small" type="success" @click="openDiagnostics(row, 'openclaw')">OpenClaw</el-button>
-          <el-button size="small" type="danger" @click="deleteAgent(row)">删除</el-button>
+          <el-button size="small" type="danger" @click="deleteAgent(row)">Xóa</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog
       v-model="showAddDialog"
-      :title="editingAgent ? '编辑智能体' : '添加智能体'"
+      :title="editingAgent ? 'Sửa Trợ lý AI' : 'Thêm Trợ lý AI'"
       width="760px"
       :close-on-click-modal="false"
     >
@@ -80,9 +80,9 @@
         preload-status
       />
       <template #footer>
-        <el-button @click="showAddDialog = false">取消</el-button>
+        <el-button @click="showAddDialog = false">Hủy</el-button>
         <el-button type="primary" @click="saveAgent" :loading="saving">
-          {{ editingAgent ? '更新' : '添加' }}
+          {{ editingAgent ? 'Cập nhật' : 'Thêm' }}
         </el-button>
       </template>
     </el-dialog>
@@ -119,7 +119,7 @@ const showDiagnosticsDialog = ref(false)
 const diagnosticAgent = ref(null)
 const diagnosticPanel = ref('mcp')
 const diagnosticsTitle = computed(() => {
-  const name = diagnosticAgent.value?.name || `智能体 ${diagnosticAgent.value?.id || ''}`
+  const name = diagnosticAgent.value?.name || `Trợ lý AI ${diagnosticAgent.value?.id || ''}`
   return diagnosticPanel.value === 'openclaw' ? `${name} - OpenClaw` : `${name} - MCP`
 })
 
@@ -129,7 +129,7 @@ const loadAgents = async () => {
     const response = await api.get('/admin/agents')
     agents.value = response.data.data || []
   } catch (error) {
-    ElMessage.error('加载智能体列表失败')
+    ElMessage.error('Tải danh sách Trợ lý AI thất bại')
   } finally {
     loading.value = false
   }
@@ -157,15 +157,15 @@ const saveAgent = async () => {
     const payload = agentFormRef.value.buildPayload()
     if (editingAgent.value) {
       await api.put(`/admin/agents/${editingAgent.value.id}`, payload)
-      ElMessage.success('智能体更新成功')
+      ElMessage.success('Cập nhật Trợ lý AI thành công')
     } else {
       await api.post('/admin/agents', payload)
-      ElMessage.success('智能体添加成功')
+      ElMessage.success('Thêm Trợ lý AI thành công')
     }
     showAddDialog.value = false
     await loadAgents()
   } catch (error) {
-    ElMessage.error(error.response?.data?.error || (editingAgent.value ? '智能体更新失败' : '智能体添加失败'))
+    ElMessage.error(error.response?.data?.error || (editingAgent.value ? 'Cập nhật Trợ lý AI thất bại' : 'Thêm Trợ lý AI thất bại'))
   } finally {
     saving.value = false
   }
@@ -173,31 +173,31 @@ const saveAgent = async () => {
 
 const deleteAgent = async (agent) => {
   try {
-    await ElMessageBox.confirm(`确定要删除智能体 "${agent.name}" 吗？`, '确认删除', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm(`Bạn có chắc muốn xóa Trợ lý AI "${agent.name}" không?`, 'Xác nhận xóa', {
+      confirmButtonText: 'Xác nhận',
+      cancelButtonText: 'Hủy',
       type: 'warning'
     })
     await api.delete(`/admin/agents/${agent.id}`)
-    ElMessage.success('智能体删除成功')
+    ElMessage.success('Xóa Trợ lý AI thành công')
     await loadAgents()
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error(error.response?.data?.error || '智能体删除失败')
+      ElMessage.error(error.response?.data?.error || 'Xóa Trợ lý AI thất bại')
     }
   }
 }
 
 const getVoiceText = (agent) => {
-  const tts = agent.tts_config?.name || agent.tts_config?.provider || '未设置TTS'
+  const tts = agent.tts_config?.name || agent.tts_config?.provider || 'Chưa đặt TTS'
   return agent.voice ? `${tts} · ${agent.voice}` : tts
 }
 
-const getASRSpeedText = (speed) => ({ normal: '正常', patient: '耐心', fast: '快速' }[speed] || '正常')
+const getASRSpeedText = (speed) => ({ normal: 'Bình thường', patient: 'Kiên nhẫn', fast: 'Nhanh' }[speed] || 'Bình thường')
 const getASRSpeedType = (speed) => ({ patient: 'warning', fast: 'success' }[speed] || '')
-const getMemoryModeText = (mode) => ({ none: '无记忆', short: '短记忆', long: '长记忆' }[mode] || '短记忆')
+const getMemoryModeText = (mode) => ({ none: 'Không có bộ nhớ', short: 'Bộ nhớ ngắn', long: 'Bộ nhớ dài' }[mode] || 'Bộ nhớ ngắn')
 const getMemoryModeType = (mode) => ({ none: 'info', long: 'success' }[mode] || '')
-const getSpeakerChatModeText = (mode) => ({ off: '关闭', identified_only: '仅命中声纹' }[mode] || '关闭')
+const getSpeakerChatModeText = (mode) => ({ off: 'Tắt', identified_only: 'Chỉ khi khớp giọng nói' }[mode] || 'Tắt')
 const getSpeakerChatModeType = (mode) => ({ off: 'info', identified_only: 'warning' }[mode] || 'info')
 
 const openDiagnostics = (agent, panel = 'mcp') => {

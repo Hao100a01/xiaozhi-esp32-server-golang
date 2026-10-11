@@ -3,22 +3,22 @@
     <div class="page-actions">
       <el-button type="primary" @click="handleAddConfig">
         <el-icon><Plus /></el-icon>
-        添加配置
+        Thêm cấu hình
       </el-button>
     </div>
 
     <el-table :data="safeConfigs" style="width: 100%" v-loading="loading">
       <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column prop="name" label="配置名称" />
-      <el-table-column prop="config_id" label="配置ID" width="150" />
-      <el-table-column prop="provider" label="提供商" width="120">
+      <el-table-column prop="name" label="Tên cấu hình" />
+      <el-table-column prop="config_id" label="ID cấu hình" width="150" />
+      <el-table-column prop="provider" label="Nhà cung cấp" width="120">
         <template #default="scope">
           <el-tag :type="getProviderTagType(scope.row.provider)">
             {{ scope.row.provider }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="enabled" label="启用状态" width="80" align="center">
+      <el-table-column prop="enabled" label="Trạng thái bật" width="80" align="center">
         <template #default="scope">
           <el-switch 
             v-model="scope.row.enabled" 
@@ -26,7 +26,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="is_default" label="默认配置" width="80" align="center">
+      <el-table-column prop="is_default" label="Cấu hình mặc định" width="80" align="center">
         <template #default="scope">
           <el-switch 
             v-model="scope.row.is_default" 
@@ -34,44 +34,44 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="created_at" label="创建时间" width="180">
+      <el-table-column prop="created_at" label="Thời gian tạo" width="180">
         <template #default="scope">
           {{ formatDate(scope.row.created_at) }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="Thao tác" width="180">
         <template #default="scope">
-          <el-button size="small" @click="editConfig(scope.row)">编辑</el-button>
+          <el-button size="small" @click="editConfig(scope.row)">Sửa</el-button>
           <el-button
             size="small"
             type="danger"
             @click="deleteConfig(scope.row.id)"
           >
-            删除
+            Xóa
           </el-button>
         </template>
       </el-table-column>
       
-      <!-- 空状态插槽 -->
+      <!-- Slot trạng thái trống -->
       <template #empty>
         <div class="empty-state">
           <el-icon size="64" color="#C0C4CC" class="empty-icon">
             <Box />
           </el-icon>
-          <div class="empty-text">暂无Memory配置</div>
-          <div class="empty-description">点击上方"添加配置"按钮创建您的第一个Memory配置</div>
+          <div class="empty-text">Chưa có cấu hình Memory</div>
+          <div class="empty-description">Nhấn nút "Thêm cấu hình" phía trên để tạo cấu hình Memory đầu tiên</div>
           <el-button type="primary" @click="handleAddConfig" class="empty-action">
             <el-icon><Plus /></el-icon>
-            添加配置
+            Thêm cấu hình
           </el-button>
         </div>
       </template>
     </el-table>
 
-    <!-- 添加/编辑配置弹窗 -->
+    <!-- Hộp thoại thêm/sửa cấu hình -->
     <el-dialog
       v-model="showDialog"
-      :title="editingConfig ? '编辑Memory配置' : '添加Memory配置'"
+      :title="editingConfig ? 'Sửa cấu hình Memory' : 'Thêm cấu hình Memory'"
       width="600px"
       @close="handleDialogClose"
     >
@@ -81,75 +81,75 @@
         :rules="rules"
         label-width="120px"
       >
-        <el-form-item label="提供商" prop="provider">
-          <el-select v-model="form.provider" placeholder="请选择提供商" style="width: 100%" @change="handleProviderChange">
+        <el-form-item label="Nhà cung cấp" prop="provider">
+          <el-select v-model="form.provider" placeholder="Chọn nhà cung cấp" style="width: 100%" @change="handleProviderChange">
             <el-option label="Memobase" value="memobase" />
             <el-option label="Mem0" value="mem0" />
             <el-option label="MemOS" value="memos" />
           </el-select>
         </el-form-item>
         
-        <el-form-item label="配置名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入配置名称" />
+        <el-form-item label="Tên cấu hình" prop="name">
+          <el-input v-model="form.name" placeholder="Nhập tên cấu hình" />
         </el-form-item>
         
-        <el-form-item label="配置ID" prop="config_id">
-          <el-input v-model="form.config_id" placeholder="请输入唯一的配置ID" />
+        <el-form-item label="ID cấu hình" prop="config_id">
+          <el-input v-model="form.config_id" placeholder="Nhập ID cấu hình duy nhất" />
         </el-form-item>
         
-        <!-- Memobase配置字段 -->
+        <!-- Các trường cấu hình Memobase -->
         <template v-if="form.provider === 'memobase'">
-          <el-form-item label="API密钥" prop="api_key">
-            <el-input v-model="form.api_key" type="password" placeholder="请输入Memobase API密钥" show-password />
+          <el-form-item label="Khóa API" prop="api_key">
+            <el-input v-model="form.api_key" type="password" placeholder="Nhập khóa API Memobase" show-password />
           </el-form-item>
           
-          <el-form-item label="基础URL" prop="base_url">
-            <el-input v-model="form.base_url" placeholder="请输入Memobase基础URL" />
+          <el-form-item label="URL cơ sở" prop="base_url">
+            <el-input v-model="form.base_url" placeholder="Nhập URL cơ sở Memobase" />
           </el-form-item>
           
-          <el-form-item label="启用搜索" prop="enable_search">
+          <el-form-item label="Bật tìm kiếm" prop="enable_search">
             <el-switch v-model="form.enable_search" />
           </el-form-item>
           
-          <el-form-item label="搜索阈值" prop="search_threshold">
+          <el-form-item label="Ngưỡng tìm kiếm" prop="search_threshold">
             <el-input-number v-model="form.search_threshold" :min="0" :max="1" :step="0.1" :precision="1" style="width: 100%" />
           </el-form-item>
           
-          <el-form-item label="搜索TopK" prop="search_top_k">
+          <el-form-item label="TopK tìm kiếm" prop="search_top_k">
             <el-input-number v-model="form.search_top_k" :min="1" :step="1" style="width: 100%" />
           </el-form-item>
         </template>
         
-        <!-- Mem0配置字段 -->
+        <!-- Các trường cấu hình Mem0 -->
         <template v-if="form.provider === 'mem0' || form.provider === 'memos'">
-          <el-form-item label="API密钥" prop="api_key">
-            <el-input v-model="form.api_key" type="password" :placeholder="form.provider === 'memos' ? '请输入MemOS兼容API密钥' : '请输入Mem0 API密钥'" show-password />
+          <el-form-item label="Khóa API" prop="api_key">
+            <el-input v-model="form.api_key" type="password" :placeholder="form.provider === 'memos' ? 'Nhập khóa API tương thích MemOS' : 'Nhập khóa API Mem0'" show-password />
           </el-form-item>
           
-          <el-form-item label="基础URL" prop="base_url">
-            <el-input v-model="form.base_url" :placeholder="form.provider === 'memos' ? '请输入MemOS服务基础URL' : '请输入Mem0基础URL'" />
+          <el-form-item label="URL cơ sở" prop="base_url">
+            <el-input v-model="form.base_url" :placeholder="form.provider === 'memos' ? 'Nhập URL cơ sở dịch vụ MemOS' : 'Nhập URL cơ sở Mem0'" />
           </el-form-item>
 
           
 
-          <el-form-item label="启用搜索" prop="enable_search">
+          <el-form-item label="Bật tìm kiếm" prop="enable_search">
             <el-switch v-model="form.enable_search" />
           </el-form-item>
           
-          <el-form-item label="搜索阈值" prop="search_threshold">
+          <el-form-item label="Ngưỡng tìm kiếm" prop="search_threshold">
             <el-input-number v-model="form.search_threshold" :min="0" :max="1" :step="0.1" :precision="1" style="width: 100%" />
           </el-form-item>
           
-          <el-form-item label="搜索TopK" prop="search_top_k">
+          <el-form-item label="TopK tìm kiếm" prop="search_top_k">
             <el-input-number v-model="form.search_top_k" :min="1" :step="1" style="width: 100%" />
           </el-form-item>
         </template>
       </el-form>
       
       <template #footer>
-        <el-button @click="handleDialogClose">取消</el-button>
+        <el-button @click="handleDialogClose">Hủy</el-button>
         <el-button type="primary" @click="handleSave" :loading="saving">
-          保存
+          Lưu
         </el-button>
       </template>
     </el-dialog>
@@ -170,7 +170,7 @@ const showDialog = ref(false)
 const editingConfig = ref(null)
 const formRef = ref()
 
-// 确保configs始终是一个数组
+// Đảm bảo configs luôn là một mảng
 const safeConfigs = computed(() => {
   return Array.isArray(configs.value) ? configs.value : []
 })
@@ -189,7 +189,7 @@ const form = reactive({
   timeout_ms: 10000
 })
 
-// 默认URL配置
+// Cấu hình URL mặc định
 const defaultUrls = {
   memobase: 'https://api.memobase.dev',
   mem0: 'https://api.mem0.ai',
@@ -204,7 +204,7 @@ const getProviderTagType = (provider) => {
 }
 
 const handleProviderChange = (value) => {
-  // 清空表单字段
+  // Xóa các trường trong form
   form.api_key = ''
   form.base_url = defaultUrls[value] || ''
   form.enable_search = true
@@ -213,7 +213,7 @@ const handleProviderChange = (value) => {
   form.timeout_ms = 10000
 }
 
-// 生成配置JSON字符串
+// Tạo chuỗi JSON cấu hình
 const generateConfig = () => {
   const config = {
     api_key: form.api_key,
@@ -230,7 +230,7 @@ const generateConfig = () => {
   return JSON.stringify(config)
 }
 
-// 解析配置JSON字符串
+// Phân giải chuỗi JSON cấu hình
 const parseConfig = (jsonData) => {
   try {
     const config = JSON.parse(jsonData)
@@ -241,58 +241,58 @@ const parseConfig = (jsonData) => {
     form.search_top_k = config.search_top_k !== undefined ? config.search_top_k : 3
     form.timeout_ms = config.timeout_ms !== undefined ? config.timeout_ms : 10000
   } catch (error) {
-    console.error('解析配置失败:', error)
+    console.error('Phân giải cấu hình thất bại:', error)
   }
 }
 
 const rules = {
   name: [
-    { required: true, message: '请输入配置名称', trigger: 'blur' }
+    { required: true, message: 'Nhập tên cấu hình', trigger: 'blur' }
   ],
   config_id: [
-    { required: true, message: '请输入配置ID', trigger: 'blur' }
+    { required: true, message: 'Nhập ID cấu hình', trigger: 'blur' }
   ],
   provider: [
-    { required: true, message: '请选择提供商', trigger: 'change' }
+    { required: true, message: 'Chọn nhà cung cấp', trigger: 'change' }
   ],
   api_key: [
-    { required: true, message: '请输入API密钥', trigger: 'blur' }
+    { required: true, message: 'Nhập khóa API', trigger: 'blur' }
   ],
   base_url: [
-    { required: true, message: '请输入基础URL', trigger: 'blur' }
+    { required: true, message: 'Nhập URL cơ sở', trigger: 'blur' }
   ]
 }
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleString('zh-CN')
+  return new Date(dateString).toLocaleString('vi-VN')
 }
 
 const loadConfigs = async () => {
   loading.value = true
   try {
     const response = await api.get('/admin/memory-configs')
-    console.log('API response:', response)
+    console.log('Phản hồi API:', response)
     
-    // 使用nextTick确保响应式更新的安全性
+    // Dùng nextTick để đảm bảo cập nhật reactive an toàn
     await nextTick()
     
-    // The backend returns { data: configs }, so we need to access response.data.data
+    // Backend trả về { data: configs }, nên cần truy cập response.data.data
     if (response && response.data && response.data.data && Array.isArray(response.data.data)) {
-      // 使用Object.freeze防止意外修改，然后创建新数组
+      // Tạo mảng mới để tránh sửa đổi ngoài ý muốn
       const newConfigs = response.data.data.map(normalizeMemoryConfigRow)
       configs.value = newConfigs
     } else if (response && response.data && response.data.data) {
-      // If response.data.data exists but is not an array, wrap it in an array
+      // Nếu response.data.data tồn tại nhưng không phải mảng, bọc nó trong một mảng
       configs.value = [normalizeMemoryConfigRow(response.data.data)]
     } else {
-      // If no valid data, set to empty array
+      // Nếu không có dữ liệu hợp lệ, đặt thành mảng rỗng
       configs.value = []
     }
-    console.log('Loaded configs:', configs.value)
+    console.log('Đã tải cấu hình:', configs.value)
   } catch (error) {
-    console.error('加载配置失败:', error)
-    ElMessage.error('加载配置失败: ' + (error.message || '未知错误'))
-    // Ensure configs is always an array to prevent render errors
+    console.error('Tải cấu hình thất bại:', error)
+    ElMessage.error('Tải cấu hình thất bại: ' + (error.message || 'Lỗi không xác định'))
+    // Đảm bảo configs luôn là mảng để tránh lỗi render
     configs.value = []
   } finally {
     loading.value = false
@@ -338,16 +338,16 @@ const handleSave = async () => {
     
     if (editingConfig.value) {
       await api.put(`/admin/memory-configs/${editingConfig.value.id}`, configData)
-      ElMessage.success('配置更新成功')
+      ElMessage.success('Cập nhật cấu hình thành công')
     } else {
       await api.post('/admin/memory-configs', configData)
-      ElMessage.success('配置创建成功')
+      ElMessage.success('Tạo cấu hình thành công')
     }
     
     showDialog.value = false
     await loadConfigs()
   } catch (error) {
-    ElMessage.error('保存失败: ' + error.message)
+    ElMessage.error('Lưu thất bại: ' + error.message)
   } finally {
     saving.value = false
   }
@@ -371,16 +371,16 @@ const editConfig = (config) => {
 
 const deleteConfig = async (id) => {
   try {
-    await ElMessageBox.confirm('确定要删除这个配置吗？', '确认删除', {
+    await ElMessageBox.confirm('Chắc chắn muốn xóa cấu hình này?', 'Xác nhận xóa', {
       type: 'warning'
     })
     
     await api.delete(`/admin/memory-configs/${id}`)
-    ElMessage.success('删除成功')
+    ElMessage.success('Xóa thành công')
     await loadConfigs()
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('删除失败: ' + error.message)
+      ElMessage.error('Xóa thất bại: ' + error.message)
     }
   }
 }
@@ -391,10 +391,10 @@ const toggleEnable = async (config) => {
       ...config,
       enabled: config.enabled
     })
-    ElMessage.success(config.enabled ? '已启用' : '已禁用')
+    ElMessage.success(config.enabled ? 'Đã bật' : 'Đã tắt')
   } catch (error) {
     config.enabled = !config.enabled
-    ElMessage.error('操作失败: ' + error.message)
+    ElMessage.error('Thao tác thất bại: ' + error.message)
   }
 }
 
@@ -402,7 +402,7 @@ const toggleDefault = async (config) => {
   try {
     if (config.is_default) {
       await api.post(`/admin/memory-configs/${config.id}/set-default`)
-      ElMessage.success('已设为默认配置')
+      ElMessage.success('Đã đặt làm cấu hình mặc định')
       await loadConfigs()
     } else {
       await api.put(`/admin/memory-configs/${config.id}`, {
@@ -413,17 +413,17 @@ const toggleDefault = async (config) => {
         is_default: false,
         json_data: config.json_data || ''
       })
-      ElMessage.success('已取消默认配置（不启用长记忆）')
+      ElMessage.success('Đã hủy cấu hình mặc định (không bật bộ nhớ dài hạn)')
       await loadConfigs()
     }
   } catch (error) {
     config.is_default = !config.is_default
-    ElMessage.error('操作失败: ' + error.message)
+    ElMessage.error('Thao tác thất bại: ' + error.message)
   }
 }
 
 const handleAddConfig = () => {
-  // 重置表单并设置默认值
+  // Đặt lại form và thiết lập giá trị mặc định
   Object.assign(form, {
     name: '',
     config_id: '',
@@ -431,7 +431,7 @@ const handleAddConfig = () => {
     is_default: false,
     enabled: true,
     api_key: '',
-    base_url: defaultUrls['memobase'], // 设置默认URL
+    base_url: defaultUrls['memobase'], // Thiết lập URL mặc định
     enable_search: true,
     search_threshold: 0.5,
     search_top_k: 3,
@@ -446,7 +446,7 @@ const handleDialogClose = () => {
   showDialog.value = false
   editingConfig.value = null
   
-  // 重置表单
+  // Đặt lại form
   Object.assign(form, {
     name: '',
     config_id: '',

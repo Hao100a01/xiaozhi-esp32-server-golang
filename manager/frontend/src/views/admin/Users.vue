@@ -3,40 +3,40 @@
     <div class="page-actions">
       <el-input
         v-model="searchKeyword"
-        placeholder="搜索用户..."
+        placeholder="Tìm kiếm người dùng..."
         style="width: 200px"
         prefix-icon="Search"
         clearable
       />
       <el-button type="primary" @click="openAddDialog">
         <el-icon><Plus /></el-icon>
-        添加用户
+        Thêm người dùng
       </el-button>
     </div>
 
-    <!-- 用户列表表格 -->
+    <!-- Bảng danh sách người dùng -->
     <el-table :data="filteredUserList" v-loading="tableLoading" style="width: 100%">
       <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column prop="username" label="用户名" width="150" />
-      <el-table-column prop="email" label="邮箱" width="200" />
-      <el-table-column prop="role" label="角色" width="120">
+      <el-table-column prop="username" label="Tên người dùng" width="150" />
+      <el-table-column prop="email" label="Email" width="200" />
+      <el-table-column prop="role" label="Vai trò" width="120">
         <template #default="{ row }">
           <el-tag :type="row.role === 'admin' ? 'danger' : 'primary'">
-            {{ row.role === 'admin' ? '管理员' : '普通用户' }}
+            {{ row.role === 'admin' ? 'Quản trị viên' : 'Người dùng thường' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="created_at" label="创建时间" width="180">
+      <el-table-column prop="created_at" label="Thời gian tạo" width="180">
         <template #default="{ row }">
           {{ formatDateTime(row.created_at) }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="360">
+      <el-table-column label="Thao tác" width="360">
         <template #default="{ row }">
-          <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
-          <el-button size="small" type="success" @click="openQuotaDialog(row)" :disabled="row.role === 'admin'">复刻额度</el-button>
+          <el-button size="small" @click="openEditDialog(row)">Sửa</el-button>
+          <el-button size="small" type="success" @click="openQuotaDialog(row)" :disabled="row.role === 'admin'">Hạn mức nhân bản</el-button>
           <el-button size="small" type="warning" @click="openResetPasswordDialog(row)">
-            重置密码
+            Đặt lại mật khẩu
           </el-button>
           <el-button 
             size="small" 
@@ -44,16 +44,16 @@
             @click="handleDeleteUser(row)"
             :disabled="row.role === 'admin'"
           >
-            删除
+            Xóa
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 添加/编辑用户对话框 -->
+    <!-- Hộp thoại thêm/sửa người dùng -->
     <el-dialog 
       v-model="userDialogVisible" 
-      :title="isEditMode ? '编辑用户' : '添加用户'"
+      :title="isEditMode ? 'Sửa người dùng' : 'Thêm người dùng'"
       width="500px"
       @close="resetUserForm"
     >
@@ -63,47 +63,47 @@
         :rules="userFormRules" 
         label-width="80px"
       >
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="Tên người dùng" prop="username">
           <el-input 
             v-model="userForm.username" 
             :disabled="isEditMode"
-            placeholder="请输入用户名"
+            placeholder="Nhập tên người dùng"
           />
         </el-form-item>
         
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="userForm.email" placeholder="请输入邮箱" />
+        <el-form-item label="Email" prop="email">
+          <el-input v-model="userForm.email" placeholder="Nhập email" />
         </el-form-item>
         
-        <el-form-item v-if="!isEditMode" label="密码" prop="password">
+        <el-form-item v-if="!isEditMode" label="Mật khẩu" prop="password">
           <el-input 
             v-model="userForm.password" 
             type="password" 
-            placeholder="请输入密码（至少6位）"
+            placeholder="Nhập mật khẩu (ít nhất 6 ký tự)"
             show-password
           />
         </el-form-item>
         
-        <el-form-item label="角色" prop="role">
-          <el-select v-model="userForm.role" placeholder="请选择角色" style="width: 100%">
-            <el-option label="普通用户" value="user" />
-            <el-option label="管理员" value="admin" />
+        <el-form-item label="Vai trò" prop="role">
+          <el-select v-model="userForm.role" placeholder="Chọn vai trò" style="width: 100%">
+            <el-option label="Người dùng thường" value="user" />
+            <el-option label="Quản trị viên" value="admin" />
           </el-select>
         </el-form-item>
       </el-form>
       
       <template #footer>
-        <el-button @click="userDialogVisible = false">取消</el-button>
+        <el-button @click="userDialogVisible = false">Hủy</el-button>
         <el-button type="primary" @click="handleUserSubmit" :loading="userSubmitLoading">
-          {{ isEditMode ? '保存' : '添加' }}
+          {{ isEditMode ? 'Lưu' : 'Thêm' }}
         </el-button>
       </template>
     </el-dialog>
 
-    <!-- 重置密码对话框 -->
+    <!-- Hộp thoại đặt lại mật khẩu -->
     <el-dialog 
       v-model="resetPasswordDialogVisible" 
-      title="重置密码" 
+      title="Đặt lại mật khẩu" 
       width="400px"
       @close="resetPasswordForm"
     >
@@ -113,64 +113,64 @@
         :rules="passwordFormRules" 
         label-width="80px"
       >
-        <el-form-item label="用户">
+        <el-form-item label="Người dùng">
           <el-input v-model="currentUser.username" disabled />
         </el-form-item>
         
-        <el-form-item label="新密码" prop="newPassword">
+        <el-form-item label="Mật khẩu mới" prop="newPassword">
           <el-input 
             v-model="passwordForm.newPassword" 
             type="password" 
-            placeholder="请输入新密码（至少6位）"
+            placeholder="Nhập mật khẩu mới (ít nhất 6 ký tự)"
             show-password
           />
         </el-form-item>
         
-        <el-form-item label="确认密码" prop="confirmPassword">
+        <el-form-item label="Xác nhận mật khẩu" prop="confirmPassword">
           <el-input 
             v-model="passwordForm.confirmPassword" 
             type="password" 
-            placeholder="请再次输入新密码"
+            placeholder="Nhập lại mật khẩu mới"
             show-password
           />
         </el-form-item>
       </el-form>
       
       <template #footer>
-        <el-button @click="resetPasswordDialogVisible = false">取消</el-button>
+        <el-button @click="resetPasswordDialogVisible = false">Hủy</el-button>
         <el-button type="primary" @click="handleResetPassword" :loading="resetPasswordLoading">
-          确认重置
+          Xác nhận đặt lại
         </el-button>
       </template>
     </el-dialog>
 
-    <!-- 声音复刻额度对话框 -->
+    <!-- Hộp thoại hạn mức nhân bản giọng nói -->
     <el-dialog
       v-model="quotaDialogVisible"
-      :title="`声音复刻额度 - ${quotaUser.username || ''}`"
+      :title="`Hạn mức nhân bản giọng nói - ${quotaUser.username || ''}`"
       width="900px"
       @close="resetQuotaDialog"
     >
-      <div class="quota-hint">按 TTS 配置分配复刻次数：-1 不限，0 禁止创建，正整数表示最大可复刻次数。</div>
+      <div class="quota-hint">Phân bổ số lần nhân bản theo cấu hình TTS: -1 là không giới hạn, 0 là cấm tạo, số nguyên dương là số lần nhân bản tối đa.</div>
       <el-table :data="quotaRows" v-loading="quotaLoading" style="margin-top: 12px">
-        <el-table-column prop="tts_config_name" label="TTS配置名称" min-width="180" />
+        <el-table-column prop="tts_config_name" label="Tên cấu hình TTS" min-width="180" />
         <el-table-column prop="tts_config_id" label="TTS Config ID" min-width="180" />
         <el-table-column prop="provider" label="Provider" width="120" />
-        <el-table-column label="已使用" width="100">
+        <el-table-column label="Đã dùng" width="100">
           <template #default="{ row }">{{ row.used_count }}</template>
         </el-table-column>
-        <el-table-column label="剩余" width="100">
-          <template #default="{ row }">{{ row.remaining_count < 0 ? '不限' : row.remaining_count }}</template>
+        <el-table-column label="Còn lại" width="100">
+          <template #default="{ row }">{{ row.remaining_count < 0 ? 'Không giới hạn' : row.remaining_count }}</template>
         </el-table-column>
-        <el-table-column label="最大次数" width="180">
+        <el-table-column label="Số lần tối đa" width="180">
           <template #default="{ row }">
             <el-input-number v-model="row.max_count" :min="-1" :step="1" :precision="0" controls-position="right" style="width: 140px" />
           </template>
         </el-table-column>
       </el-table>
       <template #footer>
-        <el-button @click="quotaDialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="quotaSaving" @click="saveQuotaSettings">保存额度</el-button>
+        <el-button @click="quotaDialogVisible = false">Hủy</el-button>
+        <el-button type="primary" :loading="quotaSaving" @click="saveQuotaSettings">Lưu hạn mức</el-button>
       </template>
     </el-dialog>
   </div>
@@ -182,7 +182,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import api from '../../utils/api'
 
-// 数据状态
+// Trạng thái dữ liệu
 const userList = ref([])
 const tableLoading = ref(false)
 const userDialogVisible = ref(false)
@@ -199,7 +199,7 @@ const isEditMode = ref(false)
 const currentUser = ref({})
 const searchKeyword = ref('')
 
-// 计算属性
+// Thuộc tính tính toán
 const filteredUserList = computed(() => {
   if (!searchKeyword.value) {
     return userList.value
@@ -210,11 +210,11 @@ const filteredUserList = computed(() => {
   )
 })
 
-// 表单引用
+// Tham chiếu form
 const userFormRef = ref()
 const passwordFormRef = ref()
 
-// 用户表单数据
+// Dữ liệu form người dùng
 const userForm = reactive({
   username: '',
   email: '',
@@ -222,42 +222,42 @@ const userForm = reactive({
   role: ''
 })
 
-// 密码表单数据
+// Dữ liệu form mật khẩu
 const passwordForm = reactive({
   newPassword: '',
   confirmPassword: ''
 })
 
-// 用户表单验证规则
+// Quy tắc kiểm tra form người dùng
 const userFormRules = {
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
+    { required: true, message: 'Nhập tên người dùng', trigger: 'blur' }
   ],
   email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+    { required: true, message: 'Nhập email', trigger: 'blur' },
+    { type: 'email', message: 'Nhập đúng định dạng email', trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+    { required: true, message: 'Nhập mật khẩu', trigger: 'blur' },
+    { min: 6, message: 'Mật khẩu không được ít hơn 6 ký tự', trigger: 'blur' }
   ],
   role: [
-    { required: true, message: '请选择角色', trigger: 'change' }
+    { required: true, message: 'Chọn vai trò', trigger: 'change' }
   ]
 }
 
-// 密码表单验证规则
+// Quy tắc kiểm tra form mật khẩu
 const passwordFormRules = {
   newPassword: [
-    { required: true, message: '请输入新密码', trigger: 'blur' },
-    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+    { required: true, message: 'Nhập mật khẩu mới', trigger: 'blur' },
+    { min: 6, message: 'Mật khẩu không được ít hơn 6 ký tự', trigger: 'blur' }
   ],
   confirmPassword: [
-    { required: true, message: '请确认密码', trigger: 'blur' },
+    { required: true, message: 'Vui lòng xác nhận mật khẩu', trigger: 'blur' },
     {
       validator: (rule, value, callback) => {
         if (value !== passwordForm.newPassword) {
-          callback(new Error('两次输入密码不一致'))
+          callback(new Error('Hai lần nhập mật khẩu không khớp'))
         } else {
           callback()
         }
@@ -267,26 +267,26 @@ const passwordFormRules = {
   ]
 }
 
-// 加载用户列表
+// Tải danh sách người dùng
 const loadUserList = async () => {
   tableLoading.value = true
   try {
     const response = await api.get('/admin/users')
     userList.value = response.data.data || []
   } catch (error) {
-    ElMessage.error('加载用户列表失败')
+    ElMessage.error('Tải danh sách người dùng thất bại')
   } finally {
     tableLoading.value = false
   }
 }
 
-// 打开添加用户对话框
+// Mở hộp thoại thêm người dùng
 const openAddDialog = () => {
   isEditMode.value = false
   userDialogVisible.value = true
 }
 
-// 打开编辑用户对话框
+// Mở hộp thoại sửa người dùng
 const openEditDialog = (user) => {
   isEditMode.value = true
   currentUser.value = user
@@ -296,7 +296,7 @@ const openEditDialog = (user) => {
   userDialogVisible.value = true
 }
 
-// 重置用户表单
+// Đặt lại form người dùng
 const resetUserForm = () => {
   userForm.username = ''
   userForm.email = ''
@@ -308,7 +308,7 @@ const resetUserForm = () => {
   }
 }
 
-// 处理用户提交
+// Xử lý gửi người dùng
 const handleUserSubmit = async () => {
   if (!userFormRef.value) return
   
@@ -317,62 +317,62 @@ const handleUserSubmit = async () => {
     userSubmitLoading.value = true
     
     if (isEditMode.value) {
-      // 编辑用户
+      // Sửa người dùng
       await api.put(`/admin/users/${currentUser.value.id}`, {
         email: userForm.email,
         role: userForm.role
       })
-      ElMessage.success('用户更新成功')
+      ElMessage.success('Cập nhật người dùng thành công')
     } else {
-      // 添加用户
+      // Thêm người dùng
       await api.post('/admin/users', {
         username: userForm.username,
         email: userForm.email,
         password: userForm.password,
         role: userForm.role
       })
-      ElMessage.success('用户添加成功')
+      ElMessage.success('Thêm người dùng thành công')
     }
     
     userDialogVisible.value = false
     loadUserList()
   } catch (error) {
-    ElMessage.error(isEditMode.value ? '更新用户失败' : '添加用户失败')
+    ElMessage.error(isEditMode.value ? 'Cập nhật người dùng thất bại' : 'Thêm người dùng thất bại')
   } finally {
     userSubmitLoading.value = false
   }
 }
 
-// 删除用户
+// Xóa người dùng
 const handleDeleteUser = async (user) => {
   try {
     await ElMessageBox.confirm(
-      `确定要删除用户 "${user.username}" 吗？`,
-      '删除确认',
+      `Bạn có chắc muốn xóa người dùng "${user.username}"?`,
+      'Xác nhận xóa',
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
         type: 'warning'
       }
     )
     
     await api.delete(`/admin/users/${user.id}`)
-    ElMessage.success('用户删除成功')
+    ElMessage.success('Xóa người dùng thành công')
     loadUserList()
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('删除用户失败')
+      ElMessage.error('Xóa người dùng thất bại')
     }
   }
 }
 
-// 打开重置密码对话框
+// Mở hộp thoại đặt lại mật khẩu
 const openResetPasswordDialog = (user) => {
   currentUser.value = user
   resetPasswordDialogVisible.value = true
 }
 
-// 打开复刻额度设置
+// Mở cài đặt hạn mức nhân bản
 const openQuotaDialog = async (user) => {
   quotaUser.value = user
   quotaDialogVisible.value = true
@@ -395,7 +395,7 @@ const loadQuotaSettings = async (userID) => {
       return acc
     }, {})
   } catch (error) {
-    ElMessage.error('加载复刻额度失败')
+    ElMessage.error('Tải hạn mức nhân bản thất bại')
     quotaRows.value = []
     quotaOriginalMaxMap.value = {}
   } finally {
@@ -411,28 +411,28 @@ const saveQuotaSettings = async () => {
   }))
   for (const item of normalizedItems) {
     if (!item.tts_config_id) {
-      ElMessage.error('存在无效的 tts_config_id')
+      ElMessage.error('Tồn tại tts_config_id không hợp lệ')
       return
     }
     if (!Number.isInteger(item.max_count) || item.max_count < -1) {
-      ElMessage.error('max_count 只能是大于等于 -1 的整数')
+      ElMessage.error('max_count chỉ được là số nguyên lớn hơn hoặc bằng -1')
       return
     }
   }
 
   const items = normalizedItems.filter((item) => quotaOriginalMaxMap.value[item.tts_config_id] !== item.max_count)
   if (items.length === 0) {
-    ElMessage.info('额度未变更')
+    ElMessage.info('Hạn mức không thay đổi')
     return
   }
 
   quotaSaving.value = true
   try {
     await api.put(`/admin/users/${quotaUser.value.id}/voice-clone-quotas`, { items })
-    ElMessage.success('复刻额度保存成功')
+    ElMessage.success('Lưu hạn mức nhân bản thành công')
     await loadQuotaSettings(quotaUser.value.id)
   } catch (error) {
-    ElMessage.error('保存复刻额度失败')
+    ElMessage.error('Lưu hạn mức nhân bản thất bại')
   } finally {
     quotaSaving.value = false
   }
@@ -444,7 +444,7 @@ const resetQuotaDialog = () => {
   quotaOriginalMaxMap.value = {}
 }
 
-// 重置密码表单
+// Đặt lại form mật khẩu
 const resetPasswordForm = () => {
   passwordForm.newPassword = ''
   passwordForm.confirmPassword = ''
@@ -453,7 +453,7 @@ const resetPasswordForm = () => {
   }
 }
 
-// 处理重置密码
+// Xử lý đặt lại mật khẩu
 const handleResetPassword = async () => {
   if (!passwordFormRef.value) return
   
@@ -461,11 +461,11 @@ const handleResetPassword = async () => {
     await passwordFormRef.value.validate()
     
     await ElMessageBox.confirm(
-      `确定要重置用户 "${currentUser.value.username}" 的密码吗？`,
-      '重置密码确认',
+      `Bạn có chắc muốn đặt lại mật khẩu của người dùng "${currentUser.value.username}"?`,
+      'Xác nhận đặt lại mật khẩu',
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
         type: 'warning'
       }
     )
@@ -476,24 +476,24 @@ const handleResetPassword = async () => {
       new_password: passwordForm.newPassword
     })
     
-    ElMessage.success('密码重置成功')
+    ElMessage.success('Đặt lại mật khẩu thành công')
     resetPasswordDialogVisible.value = false
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('重置密码失败')
+      ElMessage.error('Đặt lại mật khẩu thất bại')
     }
   } finally {
     resetPasswordLoading.value = false
   }
 }
 
-// 格式化日期时间
+// Định dạng ngày giờ
 const formatDateTime = (dateString) => {
   if (!dateString) return '--'
-  return new Date(dateString).toLocaleString('zh-CN')
+  return new Date(dateString).toLocaleString('vi-VN')
 }
 
-// 组件挂载时加载数据
+// Tải dữ liệu khi component được mount
 onMounted(() => {
   loadUserList()
 })

@@ -7,10 +7,10 @@
     :label-width="labelWidth"
     class="shared-device-form"
   >
-    <el-form-item v-if="isAdmin" label="所属用户" prop="user_id">
+    <el-form-item v-if="isAdmin" label="Người dùng sở hữu" prop="user_id">
       <el-select
         v-model="form.user_id"
-        placeholder="请选择所属用户"
+        placeholder="Chọn người dùng sở hữu"
         filterable
         style="width: 100%"
         :loading="loading.users"
@@ -24,35 +24,35 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item v-if="isBindMode && !hasFixedAgent" label="目标智能体" prop="agent_id">
-      <el-select v-model="form.agent_id" placeholder="请选择要绑定的智能体" filterable style="width: 100%">
+    <el-form-item v-if="isBindMode && !hasFixedAgent" label="Trợ lý AI mục tiêu" prop="agent_id">
+      <el-select v-model="form.agent_id" placeholder="Chọn Trợ lý AI cần liên kết" filterable style="width: 100%">
         <el-option
           v-for="agent in displayAgents"
           :key="agent.id"
-          :label="agent.name || `智能体 #${agent.id}`"
+          :label="agent.name || `Trợ lý AI #${agent.id}`"
           :value="agent.id"
         />
       </el-select>
     </el-form-item>
 
-    <el-form-item v-if="isBindMode" label="设备验证码或 MAC" prop="identifier">
+    <el-form-item v-if="isBindMode" label="Mã xác thực thiết bị hoặc MAC" prop="identifier">
       <el-input
         v-model="form.identifier"
-        placeholder="请输入 6 位验证码或设备 MAC"
+        placeholder="Nhập mã xác thực 6 chữ số hoặc MAC thiết bị"
         clearable
         autocomplete="off"
       />
       <div class="form-hint">
-        <span>示例：</span>
+        <span>Ví dụ:</span>
         <code>123456</code>
         <code>28:0A:C6:1D:3B:E8</code>
       </div>
     </el-form-item>
 
-    <el-form-item label="设备昵称" prop="nick_name">
+    <el-form-item label="Tên hiệu thiết bị" prop="nick_name">
       <el-input
         v-model="form.nick_name"
-        placeholder="例如：客厅音箱、办公室小智"
+        placeholder="Ví dụ: loa phòng khách, Tiểu Trí văn phòng"
         maxlength="50"
         show-word-limit
         clearable
@@ -61,33 +61,33 @@
 
     <template v-if="!isBindMode">
       <div class="device-form-grid">
-        <el-form-item label="设备标识" prop="device_name">
+        <el-form-item label="Định danh thiết bị" prop="device_name">
           <el-input
             v-model="form.device_name"
-            placeholder="设备端上报的 Device-ID / MAC"
+            placeholder="Device-ID / MAC do thiết bị báo lên"
             clearable
           />
         </el-form-item>
-        <el-form-item label="激活码" prop="device_code">
-          <el-input v-model="form.device_code" placeholder="设备激活码" clearable />
+        <el-form-item label="Mã kích hoạt" prop="device_code">
+          <el-input v-model="form.device_code" placeholder="Mã kích hoạt thiết bị" clearable />
         </el-form-item>
       </div>
 
       <div class="device-form-grid">
-        <el-form-item v-if="isAdmin" label="激活状态" prop="activated">
+        <el-form-item v-if="isAdmin" label="Trạng thái kích hoạt" prop="activated">
           <el-switch v-model="form.activated" />
         </el-form-item>
-        <el-form-item label="关联智能体" prop="agent_id">
+        <el-form-item label="Trợ lý AI liên kết" prop="agent_id">
           <el-select
             v-model="form.agent_id"
-            placeholder="请选择智能体"
+            placeholder="Chọn Trợ lý AI"
             style="width: 100%"
             clearable
             filterable
             :disabled="isAdmin && !form.user_id"
             :loading="loading.agents"
           >
-            <el-option label="不关联智能体" :value="0" />
+            <el-option label="Không liên kết Trợ lý AI" :value="0" />
             <el-option
               v-for="agent in displayAgents"
               :key="agent.id"
@@ -171,13 +171,13 @@ const displayAgents = computed(() => {
 })
 
 const agentLabel = (agent) => {
-  if (!props.isAdmin) return agent.name || `智能体 #${agent.id}`
+  if (!props.isAdmin) return agent.name || `Trợ lý AI #${agent.id}`
   const username = agent.username ? ` · ${agent.username}` : ''
-  return `${agent.name || `智能体 #${agent.id}`} (用户${agent.user_id}${username})`
+  return `${agent.name || `Trợ lý AI #${agent.id}`} (Người dùng ${agent.user_id}${username})`
 }
 
 const userLabel = (user) => {
-  const name = user?.username || user?.name || `用户 #${user?.id}`
+  const name = user?.username || user?.name || `Người dùng #${user?.id}`
   return `${name} (ID: ${user?.id})`
 }
 
@@ -187,7 +187,7 @@ const validateIdentifier = (_, value, callback) => {
     return
   }
   if (!String(value || '').trim()) {
-    callback(new Error('请输入设备验证码或设备 MAC'))
+    callback(new Error('Nhập mã xác thực thiết bị hoặc MAC thiết bị'))
     return
   }
   callback()
@@ -202,23 +202,23 @@ const validateDeviceIdentity = (_, value, callback) => {
   const deviceCode = String(form.value.device_code || '').trim()
   if (props.isAdmin) {
     if (!deviceName && !deviceCode) {
-      callback(new Error('设备标识和激活码至少填写一个'))
+      callback(new Error('Định danh thiết bị và mã kích hoạt phải điền ít nhất một'))
       return
     }
   } else if (!deviceName) {
-    callback(new Error('请输入设备标识'))
+    callback(new Error('Nhập định danh thiết bị'))
     return
   }
   callback()
 }
 
 const rules = computed(() => ({
-  user_id: props.isAdmin ? [{ required: true, message: '请选择所属用户', trigger: 'change' }] : [],
+  user_id: props.isAdmin ? [{ required: true, message: 'Chọn người dùng sở hữu', trigger: 'change' }] : [],
   agent_id: isBindMode.value && !hasFixedAgent.value
-    ? [{ required: true, message: '请选择目标智能体', trigger: 'change' }]
+    ? [{ required: true, message: 'Chọn Trợ lý AI mục tiêu', trigger: 'change' }]
     : [],
   identifier: [{ validator: validateIdentifier, trigger: 'blur' }],
-  nick_name: [{ max: 50, message: '设备昵称最多 50 个字符', trigger: 'blur' }],
+  nick_name: [{ max: 50, message: 'Tên hiệu thiết bị tối đa 50 ký tự', trigger: 'blur' }],
   device_name: [{ validator: validateDeviceIdentity, trigger: 'blur' }],
   device_code: [{ validator: validateDeviceIdentity, trigger: 'blur' }]
 }))

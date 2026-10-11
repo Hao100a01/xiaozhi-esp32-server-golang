@@ -1,95 +1,95 @@
 <template>
   <el-form ref="formRef" :model="model" :rules="rules" label-width="140px">
-    <el-form-item label="提供商" prop="provider">
-      <el-select v-model="model.provider" placeholder="请选择提供商" style="width: 100%" @change="onProviderChange">
+    <el-form-item label="Nhà cung cấp" prop="provider">
+      <el-select v-model="model.provider" placeholder="Chọn nhà cung cấp" style="width: 100%" @change="onProviderChange">
         <el-option label="FunASR" value="funasr" />
         <el-option label="Aliyun FunASR" value="aliyun_funasr" />
-        <el-option label="豆包" value="doubao" />
+        <el-option label="Doubao" value="doubao" />
         <el-option label="Aliyun Qwen3" value="aliyun_qwen3" />
-        <el-option label="讯飞" value="xunfei" />
+        <el-option label="iFlytek" value="xunfei" />
       </el-select>
     </el-form-item>
-    <el-form-item label="配置名称" prop="name">
-      <el-input v-model="model.name" placeholder="请输入配置名称" />
+    <el-form-item label="Tên cấu hình" prop="name">
+      <el-input v-model="model.name" placeholder="Nhập tên cấu hình" />
     </el-form-item>
-    <el-form-item label="配置ID" prop="config_id">
-      <el-input v-model="model.config_id" placeholder="请输入唯一的配置ID" />
+    <el-form-item label="ID cấu hình" prop="config_id">
+      <el-input v-model="model.config_id" placeholder="Nhập ID cấu hình duy nhất" />
     </el-form-item>
     <div v-if="model.provider === 'funasr'">
-      <el-form-item label="主机地址" prop="funasr.host">
-        <el-input v-model="model.funasr.host" placeholder="请输入主机地址" />
+      <el-form-item label="Địa chỉ host" prop="funasr.host">
+        <el-input v-model="model.funasr.host" placeholder="Nhập địa chỉ host" />
       </el-form-item>
-      <el-form-item label="端口" prop="funasr.port">
+      <el-form-item label="Cổng" prop="funasr.port">
         <el-input-number v-model="model.funasr.port" :min="1" :max="65535" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="模式" prop="funasr.mode">
-        <el-select v-model="model.funasr.mode" placeholder="请选择模式" style="width: 100%">
+      <el-form-item label="Chế độ" prop="funasr.mode">
+        <el-select v-model="model.funasr.mode" placeholder="Chọn chế độ" style="width: 100%">
           <el-option label="2pass" value="2pass" />
           <el-option label="offline" value="offline" />
           <el-option label="online" value="online" />
         </el-select>
       </el-form-item>
-      <el-form-item label="采样率" prop="funasr.sample_rate">
-        <el-select v-model="model.funasr.sample_rate" placeholder="请选择采样率" style="width: 100%">
+      <el-form-item label="Tần số lấy mẫu" prop="funasr.sample_rate">
+        <el-select v-model="model.funasr.sample_rate" placeholder="Chọn tần số lấy mẫu" style="width: 100%">
           <el-option label="8000" :value="8000" />
           <el-option label="16000" :value="16000" />
           <el-option label="44100" :value="44100" />
           <el-option label="48000" :value="48000" />
         </el-select>
       </el-form-item>
-      <el-form-item label="块大小" prop="funasr.chunk_size">
+      <el-form-item label="Kích thước khối" prop="funasr.chunk_size">
         <div style="display: flex; gap: 8px; width: 100%">
-          <el-input-number v-model="model.funasr.chunk_size[0]" :min="1" placeholder="前向" style="flex: 1" />
-          <el-input-number v-model="model.funasr.chunk_size[1]" :min="1" placeholder="中间" style="flex: 1" />
-          <el-input-number v-model="model.funasr.chunk_size[2]" :min="1" placeholder="后向" style="flex: 1" />
+          <el-input-number v-model="model.funasr.chunk_size[0]" :min="1" placeholder="Trước" style="flex: 1" />
+          <el-input-number v-model="model.funasr.chunk_size[1]" :min="1" placeholder="Giữa" style="flex: 1" />
+          <el-input-number v-model="model.funasr.chunk_size[2]" :min="1" placeholder="Sau" style="flex: 1" />
         </div>
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
-          格式：[前向, 中间, 后向]，例如：[5, 10, 5]
+          Định dạng: [trước, giữa, sau], ví dụ: [5, 10, 5]
         </div>
       </el-form-item>
-      <el-form-item label="块间隔" prop="funasr.chunk_interval">
+      <el-form-item label="Khoảng cách khối" prop="funasr.chunk_interval">
         <el-input-number v-model="model.funasr.chunk_interval" :min="1" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="最大连接数" prop="funasr.max_connections">
+      <el-form-item label="Số kết nối tối đa" prop="funasr.max_connections">
         <el-input-number v-model="model.funasr.max_connections" :min="1" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="超时时间(秒)" prop="funasr.timeout">
+      <el-form-item label="Thời gian chờ (giây)" prop="funasr.timeout">
         <el-input-number v-model="model.funasr.timeout" :min="1" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="自动结束" prop="funasr.auto_end">
+      <el-form-item label="Tự động kết thúc" prop="funasr.auto_end">
         <el-switch v-model="model.funasr.auto_end" />
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
-          确保FunASR已进行相应配置
+          Đảm bảo FunASR đã được cấu hình tương ứng
         </div>
       </el-form-item>
     </div>
     <div v-if="model.provider === 'aliyun_funasr'">
       <el-form-item label="API Key" prop="aliyun_funasr.api_key">
-        <el-input v-model="model.aliyun_funasr.api_key" type="password" show-password placeholder="可以为空，读取DASHSCOPE_API_KEY" />
+        <el-input v-model="model.aliyun_funasr.api_key" type="password" show-password placeholder="Có thể để trống, đọc DASHSCOPE_API_KEY" />
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
-          可以为空，默认回退DASHSCOPE_API_KEY
+          Có thể để trống, mặc định dùng DASHSCOPE_API_KEY
         </div>
       </el-form-item>
       <el-form-item label="WS URL" prop="aliyun_funasr.ws_url">
         <el-input v-model="model.aliyun_funasr.ws_url" placeholder="wss://dashscope.aliyuncs.com/api-ws/v1/inference/" />
       </el-form-item>
-      <el-form-item label="模型" prop="aliyun_funasr.model">
+      <el-form-item label="Model" prop="aliyun_funasr.model">
         <el-input v-model="model.aliyun_funasr.model" placeholder="fun-asr-realtime" />
       </el-form-item>
-      <el-form-item label="音频格式" prop="aliyun_funasr.format">
-        <el-select v-model="model.aliyun_funasr.format" placeholder="请选择格式" style="width: 100%">
+      <el-form-item label="Định dạng âm thanh" prop="aliyun_funasr.format">
+        <el-select v-model="model.aliyun_funasr.format" placeholder="Chọn định dạng" style="width: 100%">
           <el-option label="pcm" value="pcm" />
         </el-select>
       </el-form-item>
-      <el-form-item label="采样率" prop="aliyun_funasr.sample_rate">
-        <el-select v-model="model.aliyun_funasr.sample_rate" placeholder="请选择采样率" style="width: 100%">
+      <el-form-item label="Tần số lấy mẫu" prop="aliyun_funasr.sample_rate">
+        <el-select v-model="model.aliyun_funasr.sample_rate" placeholder="Chọn tần số lấy mẫu" style="width: 100%">
           <el-option label="16000" :value="16000" />
         </el-select>
       </el-form-item>
-      <el-form-item label="语言提示" prop="aliyun_funasr.language_hints">
+      <el-form-item label="Gợi ý ngôn ngữ" prop="aliyun_funasr.language_hints">
         <el-select
           v-model="model.aliyun_funasr.language_hints"
           multiple
@@ -99,68 +99,68 @@
           placeholder="zh"
           style="width: 100%"
         >
-          <el-option label="中文 zh" value="zh" />
-          <el-option label="英文 en" value="en" />
-          <el-option label="日语 ja" value="ja" />
-          <el-option label="韩语 ko" value="ko" />
+          <el-option label="Tiếng Trung zh" value="zh" />
+          <el-option label="Tiếng Anh en" value="en" />
+          <el-option label="Tiếng Nhật ja" value="ja" />
+          <el-option label="Tiếng Hàn ko" value="ko" />
         </el-select>
       </el-form-item>
-      <el-form-item label="词表ID" prop="aliyun_funasr.vocabulary_id">
-        <el-input v-model="model.aliyun_funasr.vocabulary_id" placeholder="可以为空" />
+      <el-form-item label="ID từ vựng" prop="aliyun_funasr.vocabulary_id">
+        <el-input v-model="model.aliyun_funasr.vocabulary_id" placeholder="Có thể để trống" />
       </el-form-item>
-      <el-form-item label="去口头语" prop="aliyun_funasr.disfluency_removal_enabled">
+      <el-form-item label="Loại bỏ từ đệm" prop="aliyun_funasr.disfluency_removal_enabled">
         <el-switch v-model="model.aliyun_funasr.disfluency_removal_enabled" />
       </el-form-item>
-      <el-form-item label="超时时间(秒)" prop="aliyun_funasr.timeout">
+      <el-form-item label="Thời gian chờ (giây)" prop="aliyun_funasr.timeout">
         <el-input-number v-model="model.aliyun_funasr.timeout" :min="1" style="width: 100%" />
       </el-form-item>
     </div>
     <div v-if="model.provider === 'doubao'">
-      <el-form-item label="应用ID" prop="doubao.appid">
-        <el-input v-model="model.doubao.appid" placeholder="请输入应用ID" />
+      <el-form-item label="ID ứng dụng" prop="doubao.appid">
+        <el-input v-model="model.doubao.appid" placeholder="Nhập ID ứng dụng" />
       </el-form-item>
-      <el-form-item label="访问令牌" prop="doubao.access_token">
-        <el-input v-model="model.doubao.access_token" type="password" placeholder="请输入访问令牌" show-password />
+      <el-form-item label="Access Token" prop="doubao.access_token">
+        <el-input v-model="model.doubao.access_token" type="password" placeholder="Nhập Access Token" show-password />
       </el-form-item>
       <el-form-item label="WebSocket URL" prop="doubao.ws_url">
-        <el-input v-model="model.doubao.ws_url" placeholder="请输入WebSocket URL" />
+        <el-input v-model="model.doubao.ws_url" placeholder="Nhập WebSocket URL" />
       </el-form-item>
-      <el-form-item label="资源规格" prop="doubao.resource_id">
-        <el-select v-model="model.doubao.resource_id" placeholder="请选择资源规格" style="width: 100%">
-          <el-option label="豆包流式语音识别模型1.0 小时版" value="volc.bigasr.sauc.duration" />
-          <el-option label="豆包流式语音识别模型1.0 并发版" value="volc.bigasr.sauc.concurrent" />
-          <el-option label="豆包流式语音识别模型2.0 小时版" value="volc.seedasr.sauc.duration" />
-          <el-option label="豆包流式语音识别模型2.0 并发版" value="volc.seedasr.sauc.concurrent" />
+      <el-form-item label="Thông số tài nguyên" prop="doubao.resource_id">
+        <el-select v-model="model.doubao.resource_id" placeholder="Chọn thông số tài nguyên" style="width: 100%">
+          <el-option label="Model nhận dạng giọng nói streaming Doubao 1.0 (tính theo giờ)" value="volc.bigasr.sauc.duration" />
+          <el-option label="Model nhận dạng giọng nói streaming Doubao 1.0 (đồng thời)" value="volc.bigasr.sauc.concurrent" />
+          <el-option label="Model nhận dạng giọng nói streaming Doubao 2.0 (tính theo giờ)" value="volc.seedasr.sauc.duration" />
+          <el-option label="Model nhận dạng giọng nói streaming Doubao 2.0 (đồng thời)" value="volc.seedasr.sauc.concurrent" />
         </el-select>
       </el-form-item>
-      <el-form-item label="结束窗口大小" prop="doubao.end_window_size">
+      <el-form-item label="Kích thước cửa sổ kết thúc" prop="doubao.end_window_size">
         <el-input-number v-model="model.doubao.end_window_size" :min="1" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="启用标点符号" prop="doubao.enable_punc">
+      <el-form-item label="Bật dấu câu" prop="doubao.enable_punc">
         <el-switch v-model="model.doubao.enable_punc" />
       </el-form-item>
-      <el-form-item label="启用反向文本标准化" prop="doubao.enable_itn">
+      <el-form-item label="Bật chuẩn hoá văn bản nghịch đảo" prop="doubao.enable_itn">
         <el-switch v-model="model.doubao.enable_itn" />
       </el-form-item>
-      <el-form-item label="启用数字检测修正" prop="doubao.enable_ddc">
+      <el-form-item label="Bật sửa lỗi phát hiện số" prop="doubao.enable_ddc">
         <el-switch v-model="model.doubao.enable_ddc" />
       </el-form-item>
-      <el-form-item label="分块时长(毫秒)" prop="doubao.chunk_duration">
+      <el-form-item label="Độ dài khối (ms)" prop="doubao.chunk_duration">
         <el-input-number v-model="model.doubao.chunk_duration" :min="1" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="超时时间(秒)" prop="doubao.timeout">
+      <el-form-item label="Thời gian chờ (giây)" prop="doubao.timeout">
         <el-input-number v-model="model.doubao.timeout" :min="1" style="width: 100%" />
       </el-form-item>
     </div>
     <div v-if="model.provider === 'xunfei'">
-      <el-form-item label="应用ID" prop="xunfei.appid">
-        <el-input v-model="model.xunfei.appid" placeholder="请输入讯飞应用ID" />
+      <el-form-item label="ID ứng dụng" prop="xunfei.appid">
+        <el-input v-model="model.xunfei.appid" placeholder="Nhập ID ứng dụng iFlytek" />
       </el-form-item>
       <el-form-item label="API Key" prop="xunfei.api_key">
-        <el-input v-model="model.xunfei.api_key" type="password" show-password placeholder="请输入讯飞API Key" />
+        <el-input v-model="model.xunfei.api_key" type="password" show-password placeholder="Nhập API Key iFlytek" />
       </el-form-item>
       <el-form-item label="API Secret" prop="xunfei.api_secret">
-        <el-input v-model="model.xunfei.api_secret" type="password" show-password placeholder="请输入讯飞API Secret" />
+        <el-input v-model="model.xunfei.api_secret" type="password" show-password placeholder="Nhập API Secret iFlytek" />
       </el-form-item>
       <el-form-item label="Host" prop="xunfei.host">
         <el-input v-model="model.xunfei.host" placeholder="iat-api.xfyun.cn" />
@@ -168,71 +168,71 @@
       <el-form-item label="Path" prop="xunfei.path">
         <el-input v-model="model.xunfei.path" placeholder="/v2/iat" />
       </el-form-item>
-      <el-form-item label="业务领域" prop="xunfei.domain">
+      <el-form-item label="Lĩnh vực nghiệp vụ" prop="xunfei.domain">
         <el-input v-model="model.xunfei.domain" placeholder="iat" />
       </el-form-item>
-      <el-form-item label="语言" prop="xunfei.language">
+      <el-form-item label="Ngôn ngữ" prop="xunfei.language">
         <el-input v-model="model.xunfei.language" placeholder="zh_cn" />
       </el-form-item>
-      <el-form-item label="方言" prop="xunfei.accent">
+      <el-form-item label="Phương ngữ" prop="xunfei.accent">
         <el-input v-model="model.xunfei.accent" placeholder="mandarin" />
       </el-form-item>
-      <el-form-item label="采样率" prop="xunfei.sample_rate">
-        <el-select v-model="model.xunfei.sample_rate" placeholder="请选择采样率" style="width: 100%">
+      <el-form-item label="Tần số lấy mẫu" prop="xunfei.sample_rate">
+        <el-select v-model="model.xunfei.sample_rate" placeholder="Chọn tần số lấy mẫu" style="width: 100%">
           <el-option label="16000" :value="16000" />
         </el-select>
       </el-form-item>
-      <el-form-item label="超时时间(秒)" prop="xunfei.timeout">
+      <el-form-item label="Thời gian chờ (giây)" prop="xunfei.timeout">
         <el-input-number v-model="model.xunfei.timeout" :min="1" style="width: 100%" />
       </el-form-item>
     </div>
     <div v-if="model.provider === 'aliyun_qwen3'">
       <el-form-item label="API Key" prop="aliyun_qwen3.api_key">
-        <el-input v-model="model.aliyun_qwen3.api_key" type="password" show-password placeholder="可以为空，读取DASHSCOPE_API_KEY" />
+        <el-input v-model="model.aliyun_qwen3.api_key" type="password" show-password placeholder="Có thể để trống, đọc DASHSCOPE_API_KEY" />
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
-          可以为空，默认回退DASHSCOPE_API_KEY
+          Có thể để trống, mặc định dùng DASHSCOPE_API_KEY
         </div>
       </el-form-item>
       <el-form-item label="WS URL" prop="aliyun_qwen3.ws_url">
         <el-input v-model="model.aliyun_qwen3.ws_url" placeholder="wss://dashscope.aliyuncs.com/api-ws/v1/realtime" />
       </el-form-item>
-      <el-form-item label="模型" prop="aliyun_qwen3.model">
+      <el-form-item label="Model" prop="aliyun_qwen3.model">
         <el-input v-model="model.aliyun_qwen3.model" placeholder="qwen3-asr-flash-realtime" />
       </el-form-item>
-      <el-form-item label="音频格式" prop="aliyun_qwen3.format">
-        <el-select v-model="model.aliyun_qwen3.format" placeholder="请选择格式" style="width: 100%">
+      <el-form-item label="Định dạng âm thanh" prop="aliyun_qwen3.format">
+        <el-select v-model="model.aliyun_qwen3.format" placeholder="Chọn định dạng" style="width: 100%">
           <el-option label="pcm" value="pcm" />
           <el-option label="opus" value="opus" />
         </el-select>
       </el-form-item>
-      <el-form-item label="采样率" prop="aliyun_qwen3.sample_rate">
-        <el-select v-model="model.aliyun_qwen3.sample_rate" placeholder="请选择采样率" style="width: 100%">
+      <el-form-item label="Tần số lấy mẫu" prop="aliyun_qwen3.sample_rate">
+        <el-select v-model="model.aliyun_qwen3.sample_rate" placeholder="Chọn tần số lấy mẫu" style="width: 100%">
           <el-option label="8000" :value="8000" />
           <el-option label="16000" :value="16000" />
         </el-select>
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
-          主程序当前仅支持 16000
+          Chương trình chính hiện chỉ hỗ trợ 16000
         </div>
       </el-form-item>
-      <el-form-item label="语言" prop="aliyun_qwen3.language">
+      <el-form-item label="Ngôn ngữ" prop="aliyun_qwen3.language">
         <el-input v-model="model.aliyun_qwen3.language" placeholder="zh" />
       </el-form-item>
-      <el-form-item label="自动结束" prop="aliyun_qwen3.auto_end">
+      <el-form-item label="Tự động kết thúc" prop="aliyun_qwen3.auto_end">
         <el-switch v-model="model.aliyun_qwen3.auto_end" />
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
-          开启时使用 server_vad，关闭时使用 Manual 模式
+          Khi bật dùng server_vad, khi tắt dùng chế độ Manual
         </div>
       </el-form-item>
-      <el-form-item label="VAD 阈值" prop="aliyun_qwen3.vad_threshold" v-if="model.aliyun_qwen3?.auto_end">
+      <el-form-item label="Ngưỡng VAD" prop="aliyun_qwen3.vad_threshold" v-if="model.aliyun_qwen3?.auto_end">
         <el-input-number v-model="model.aliyun_qwen3.vad_threshold" :min="0" :max="1" :step="0.1" :precision="2" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="VAD 静音时间(毫秒)" prop="aliyun_qwen3.vad_silence_ms" v-if="model.aliyun_qwen3?.auto_end">
+      <el-form-item label="Thời gian im lặng VAD (ms)" prop="aliyun_qwen3.vad_silence_ms" v-if="model.aliyun_qwen3?.auto_end">
         <el-input-number v-model="model.aliyun_qwen3.vad_silence_ms" :min="0" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="超时时间(秒)" prop="aliyun_qwen3.timeout">
+      <el-form-item label="Thời gian chờ (giây)" prop="aliyun_qwen3.timeout">
         <el-input-number v-model="model.aliyun_qwen3.timeout" :min="1" style="width: 100%" />
       </el-form-item>
     </div>
@@ -267,7 +267,7 @@ const ASR_PROVIDER_DEFAULTS = {
     }
   },
   aliyun_funasr: {
-    name: '阿里云 FunASR ASR',
+    name: 'Alibaba Cloud FunASR ASR',
     config_id: 'aliyun_funasr_default',
     data: {
       api_key: '',
@@ -282,7 +282,7 @@ const ASR_PROVIDER_DEFAULTS = {
     }
   },
   doubao: {
-    name: '豆包 ASR',
+    name: 'Doubao ASR',
     config_id: 'doubao_default',
     data: {
       appid: '',
@@ -299,7 +299,7 @@ const ASR_PROVIDER_DEFAULTS = {
     }
   },
   aliyun_qwen3: {
-    name: '阿里云 Qwen3 ASR',
+    name: 'Alibaba Cloud Qwen3 ASR',
     config_id: 'aliyun_qwen3_default',
     data: {
       api_key: '',
@@ -315,7 +315,7 @@ const ASR_PROVIDER_DEFAULTS = {
     }
   },
   xunfei: {
-    name: '讯飞 ASR',
+    name: 'iFlytek ASR',
     config_id: 'xunfei_default',
     data: {
       appid: '',

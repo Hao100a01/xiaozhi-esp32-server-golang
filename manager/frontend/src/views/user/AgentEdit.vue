@@ -4,11 +4,11 @@
       <div class="header-left">
         <el-button text @click="goBack">
           <el-icon><ArrowLeft /></el-icon>
-          返回
+          Quay lại
         </el-button>
-        <h2>{{ form.name || '编辑智能体' }}</h2>
+        <h2>{{ form.name || 'Sửa trợ lý AI' }}</h2>
       </div>
-      <el-button type="primary" @click="handleSave" :loading="saving">保存配置</el-button>
+      <el-button type="primary" @click="handleSave" :loading="saving">Lưu cấu hình</el-button>
     </div>
 
     <div class="role-strip" v-loading="rolesLoading">
@@ -21,9 +21,9 @@
         @click="applyRoleConfig(role)"
       >
         <span>{{ role.name }}</span>
-        <small>{{ role.role_type === 'global' ? '全局' : '我的' }}</small>
+        <small>{{ role.role_type === 'global' ? 'Toàn cục' : 'Của tôi' }}</small>
       </button>
-      <span v-if="!rolesLoading && allRoles.length === 0" class="role-empty">暂无可用角色</span>
+      <span v-if="!rolesLoading && allRoles.length === 0" class="role-empty">Chưa có vai trò khả dụng</span>
     </div>
 
     <div class="form-card" v-loading="loadingAgent">
@@ -68,7 +68,7 @@ const loadAgent = async () => {
     const response = await api.get(`/user/agents/${route.params.id}`)
     form.value = agentToForm(response.data.data || {})
   } catch (error) {
-    ElMessage.error(error.response?.data?.error || '加载智能体配置失败')
+    ElMessage.error(error.response?.data?.error || 'Tải cấu hình trợ lý AI thất bại')
   } finally {
     loadingAgent.value = false
   }
@@ -107,7 +107,7 @@ const applyRoleConfig = async (role) => {
     }
 
     form.value.voice = role.voice || null
-    ElMessage.info('已填充角色配置，请点击“保存配置”提交')
+    ElMessage.info('Đã nạp cấu hình vai trò, nhấn “Lưu cấu hình” để gửi')
   } finally {
     applyingRoleConfig.value = false
   }
@@ -115,7 +115,7 @@ const applyRoleConfig = async (role) => {
 
 const handleSave = async () => {
   if (applyingRoleConfig.value) {
-    ElMessage.info('当前正在填充角色配置，请稍后保存')
+    ElMessage.info('Đang nạp cấu hình vai trò, vui lòng lưu sau')
     return
   }
   if (!agentFormRef.value) return
@@ -125,10 +125,10 @@ const handleSave = async () => {
   saving.value = true
   try {
     await api.put(`/user/agents/${route.params.id}`, agentFormRef.value.buildPayload())
-    ElMessage.success('保存成功')
+    ElMessage.success('Lưu thành công')
     router.push('/agents')
   } catch (error) {
-    ElMessage.error(error.response?.data?.error || '保存失败')
+    ElMessage.error(error.response?.data?.error || 'Lưu thất bại')
   } finally {
     saving.value = false
   }
