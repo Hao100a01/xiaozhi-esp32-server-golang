@@ -90,7 +90,7 @@ const configId = ref(null)
 const formRef = ref(null)
 
 const createDefaultFormState = () => ({
-  'UDP配置',
+  name:'UDP配置',
   is_default: true,
   external_host: '192.168.0.208',
   external_port: 8990,
